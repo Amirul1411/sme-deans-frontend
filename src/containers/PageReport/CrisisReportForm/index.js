@@ -54,7 +54,7 @@ const translations = {
     crisisDescriptionPlaceholder: "我们需要知道的事情？",
     assistanceDescriptionPlaceholder: "如果您选择了其他，请在这里指定您的援助请求"
   },
-  ta: {
+  tm: {
     yourName: "உங்கள் பெயர்",
     mobileNumber: "கைபேசி எண்",
     location: "இடம்",
