@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const devMode = process.env.NODE_ENV !== "production";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
@@ -53,15 +53,17 @@ const config = {
             loader: "css-loader",
             options: {
               importLoaders: 1,
-              minimize: true,
               sourceMap: true,
-              camelCase: true
-            }
+              modules: {
+                auto: true, // Automatically enables CSS Modules for files ending with .module.css
+                exportLocalsConvention: "camelCase", // Converts class names to camelCase
+              },
+            },
           },
           {
             loader: "postcss-loader",
             options: {
-              config: {
+              postcssOptions: {
                 path: path.resolve(PROJECT_ROOT, "postcss.config.js")
               }
             }
@@ -103,17 +105,18 @@ const config = {
           {
             loader: "css-loader",
             options: {
-              minimize: true,
-              sourceMap: true,
               importLoaders: 1,
-              modules: true,
-              camelCase: true
-            }
+              sourceMap: true,
+              modules: {
+                auto: true, // Automatically enables CSS Modules for files ending with .module.css
+                exportLocalsConvention: "camelCase", // Converts class names to camelCase
+              },
+            },
           },
           {
             loader: "postcss-loader",
             options: {
-              config: {
+              postcssOptions: {
                 path: path.resolve(PROJECT_ROOT, "postcss.config.js")
               }
             }
@@ -122,11 +125,13 @@ const config = {
             loader: "resolve-url-loader"
           },
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {
-              includePaths: [path.resolve(SRC_PATH, "styles")],
-              sourceMap: true
-            }
+              sassOptions: {
+                includePaths: [path.resolve(SRC_PATH, "styles")]
+              },
+              sourceMap: true,
+            },
           }
         ]
       }
@@ -139,7 +144,7 @@ const config = {
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
       automaticNameDelimiter: "~",
-      name: true,
+      name: false,
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
@@ -170,9 +175,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: PROJECT_ROOT + "/index.html"
     }),
-    new CleanWebpackPlugin([OUTPUT_PATH], {
-      root: PROJECT_ROOT
-    }),
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
