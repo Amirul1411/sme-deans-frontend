@@ -103,9 +103,8 @@ const config = {
           {
             loader: "css-loader",
             options: {
-              minimize: true,
               sourceMap: true,
-              importLoaders: 1,
+              importLoaders: 2, // Ensures PostCSS and Sass loaders are applied to imported CSS
               modules: true,
               camelCase: true
             }
@@ -113,23 +112,30 @@ const config = {
           {
             loader: "postcss-loader",
             options: {
-              config: {
-                path: path.resolve(PROJECT_ROOT, "postcss.config.js")
-              }
+              postcssOptions: {
+                config: path.resolve(PROJECT_ROOT, "postcss.config.js") // Adjust PostCSS config if necessary
+              },
+              sourceMap: true
             }
           },
           {
-            loader: "resolve-url-loader"
+            loader: "resolve-url-loader",
+            options: {
+              sourceMap: true
+            }
           },
           {
             loader: "sass-loader",
             options: {
-              includePaths: [path.resolve(SRC_PATH, "styles")],
-              sourceMap: true
+              sourceMap: true,
+              sassOptions: {
+                includePaths: [path.resolve(SRC_PATH, "styles")]
+              }
             }
           }
         ]
       }
+      
     ]
   },
   optimization: {

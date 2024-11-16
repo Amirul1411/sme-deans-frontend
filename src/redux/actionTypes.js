@@ -81,3 +81,7 @@ export const DISPATCH_CRISIS_FAILURE = "DISPATCH_CRISIS_TYPE_FAILURE";
 // ======================================================== MODAL
 export const MODAL_SHOW = "MODAL_SHOW";
 export const MODAL_HIDE = "MODAL_HIDE";
+
+// ======================================================== LANGUAGE
+export const SET_LANGUAGE = "SET_LANGUAGE"; 
+

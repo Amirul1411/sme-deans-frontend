@@ -1,68 +1,111 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-// import { Icon } from "antd";
 import * as styles from "./style.scss";
 
-const RealTimePSI = props => {
-  const { psi } = props;
+const translations = {
+  en: {
+    pollutionOverview: "Pollution Overview",
+    currentStatus: "Current Status",
+    maxPSIOfPastHour: "Max PSI of Past Hour",
+    national: "National",
+    east: "East",
+    south: "South",
+    west: "West",
+    north: "North",
+    central: "Central",
+  },
+  ms: {
+    pollutionOverview: "Gambaran Pollutasi",
+    currentStatus: "Status Semasa",
+    maxPSIOfPastHour: "PSI Maksimum Dalam Jam Terkini",
+    national: "Nasional",
+    east: "Timur",
+    south: "Selatan",
+    west: "Barat",
+    north: "Utara",
+    central: "Pusat",
+  },
+  zh: {
+    pollutionOverview: "污染概况",
+    currentStatus: "当前状态",
+    maxPSIOfPastHour: "过去一小时最大PSI",
+    national: "全国",
+    east: "东部",
+    south: "南部",
+    west: "西部",
+    north: "北部",
+    central: "中部",
+  },
+  tm: {
+    pollutionOverview: "படிமாசார நிலவரம்",
+    currentStatus: "தற்போதைய நிலை",
+    maxPSIOfPastHour: "கடந்த மணிநேரத்தில் அதிகபட்ச PSI",
+    national: "தேசிய",
+    east: "கிழக்கு",
+    south: "தெற்கு",
+    west: "மேற்கு",
+    north: "வடக்கு",
+    central: "மத்திய",
+  },
+};
+
+
+const RealTimePSI = (props) => {
+  const { psi, language } = props;
+
+  const t = translations[language.language] || translations.en;
+
   const status = psi && psi.status;
   const hourly = psi && psi.hourly;
   const { national, west, east, central, south, north } = hourly || {};
+
   return (
     <div className={styles.container}>
       <div>
-        <strong>Pollution Overview</strong>
+        <strong>{t.pollutionOverview}</strong>
       </div>
       <div>
-        Current Status:{" "}
+        {t.currentStatus}:{" "}
         <span style={{ color: "crimson" }}>
           <strong>{status}</strong>
         </span>
       </div>
       <div>
-        <strong>Max PSI of Past Hour</strong>
+        <strong>{t.maxPSIOfPastHour}</strong>
       </div>
       <div>
-        National: <strong>{national}</strong>
+        {t.national}: <strong>{national}</strong>
       </div>
       <div>
-        East: <strong>{east}</strong>
+        {t.east}: <strong>{east}</strong>
       </div>
       <div>
-        South: <strong>{south}</strong>
+        {t.south}: <strong>{south}</strong>
       </div>
       <div>
-        West: <strong>{west}</strong>
+        {t.west}: <strong>{west}</strong>
       </div>
       <div>
-        North: <strong>{north}</strong>
+        {t.north}: <strong>{north}</strong>
       </div>
       <div>
-        Central: <strong>{central}</strong>
+        {t.central}: <strong>{central}</strong>
       </div>
-      {/* <div className={styles.internet}>
-        Internet Status:
-        <Icon
-          type="check-circle"
-          theme="twoTone"
-          twoToneColor="#52c41a"
-          style={{ marginLeft: "0.5rem" }}
-        />{" "}
-        Online
-      </div> */}
     </div>
   );
 };
 
 RealTimePSI.propTypes = {
-  psi: PropTypes.object
+  psi: PropTypes.object,
+  language: PropTypes.string,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { common } = state;
   return {
-    psi: common && common.psi
+    psi: common && common.psi,
+    language: state.language,
   };
 };
 
