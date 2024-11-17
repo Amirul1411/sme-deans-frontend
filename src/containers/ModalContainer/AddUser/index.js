@@ -32,7 +32,7 @@ class _AddUserForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {getFieldDecorator("username", {
-            rules: [{ required: true, message: "Please input username!" }]
+            rules: [{ required: true, message: "Please input username!" }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -42,7 +42,7 @@ class _AddUserForm extends React.Component {
         </FormItem>
         <FormItem>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input password!" }]
+            rules: [{ required: true, message: "Please input password!" }],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -54,17 +54,9 @@ class _AddUserForm extends React.Component {
         <FormItem>
           {getFieldDecorator("isAdmin", {
             valuePropName: "checked",
-            initialValue: false
-          })(
-            <Checkbox className={styles.check}>
-              This user is an admin user
-            </Checkbox>
-          )}
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.createButton}
-          >
+            initialValue: false,
+          })(<Checkbox className={styles.check}>This user is an admin user</Checkbox>)}
+          <Button type="primary" htmlType="submit" className={styles.createButton}>
             Create
           </Button>
         </FormItem>
@@ -75,20 +67,14 @@ class _AddUserForm extends React.Component {
 
 _AddUserForm.propTypes = {
   form: PropTypes.object.isRequired,
-  addUser: PropTypes.func.isRequired
+  addUser: PropTypes.func.isRequired,
 };
 
 const AddUser = props => {
   const AddUserForm = Form.create()(_AddUserForm);
   const { addUser } = props;
   return (
-    <Modal
-      centered
-      title="ADD USER"
-      visible
-      onCancel={props.hideModal}
-      footer={null}
-    >
+    <Modal centered title="ADD USER" visible onCancel={props.hideModal} footer={null}>
       <AddUserForm addUser={addUser} />
     </Modal>
   );
@@ -96,14 +82,11 @@ const AddUser = props => {
 
 AddUser.propTypes = {
   hideModal: PropTypes.func.isRequired,
-  addUser: PropTypes.func.isRequired
+  addUser: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  addUser: form => dispatch(addUser(form))
+  addUser: form => dispatch(addUser(form)),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(AddUser);
+export default connect(null, mapDispatchToProps)(AddUser);

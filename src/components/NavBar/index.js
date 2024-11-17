@@ -66,22 +66,19 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
   getCurrentUser: PropTypes.func.isRequired,
   userLogout: PropTypes.func.isRequired,
-  currentUser: PropTypes.string
+  currentUser: PropTypes.string,
 };
 
 const mapStateToProps = state => {
   const { staff } = state;
   return {
-    currentUser: staff && staff.currentUser
+    currentUser: staff && staff.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   getCurrentUser: () => dispatch(getCurrentUser()),
-  userLogout: () => dispatch(userLogout())
+  userLogout: () => dispatch(userLogout()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

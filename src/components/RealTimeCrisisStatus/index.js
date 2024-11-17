@@ -6,8 +6,7 @@ import * as styles from "./style.scss";
 
 const RealTimeCrisisStatus = props => {
   const { crises } = props || [];
-  const num =
-    crises && crises.filter(crisis => crisis.crisis_status === "DP").length;
+  const num = crises && crises.filter(crisis => crisis.crisis_status === "DP").length;
   return (
     <div className={styles.container}>
       <div>
@@ -31,13 +30,13 @@ const RealTimeCrisisStatus = props => {
 };
 
 RealTimeCrisisStatus.propTypes = {
-  crises: PropTypes.array
+  crises: PropTypes.array,
 };
 
 const mapStateToProps = state => {
   const { common } = state;
   return {
-    crises: common && common.crises
+    crises: common && common.crises,
   };
 };
 

@@ -7,7 +7,7 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
 class GMap extends Component {
   state = {
-    crises: {}
+    crises: {},
   };
 
   componentDidMount = () => {
@@ -62,9 +62,9 @@ class GMap extends Component {
                 lng: location && location["lng"],
                 location: crisis.crisis_location1,
                 type: type,
-                description: description
-              }
-            }
+                description: description,
+              },
+            },
           });
         });
     });
@@ -76,7 +76,7 @@ class GMap extends Component {
       <div style={{ height: "100%", width: "100%" }}>
         <GoogleMapReact
           bootstrapURLKeys={{
-            key: "AIzaSyA4Z60Vt8Bq84x2X32NQ286a_2_hADWzqI"
+            key: "AIzaSyA4Z60Vt8Bq84x2X32NQ286a_2_hADWzqI",
           }}
           defaultCenter={{ lat: 1.3354, lng: 103.8277 }}
           defaultZoom={12}
@@ -91,13 +91,13 @@ class GMap extends Component {
 
 GMap.propTypes = {
   crises: PropTypes.array.isRequired,
-  crisisType: PropTypes.array
+  crisisType: PropTypes.array,
 };
 
 const mapStateToProps = state => {
   const { system } = state;
   return {
-    crisisType: system && system.crisisType
+    crisisType: system && system.crisisType,
   };
 };
 

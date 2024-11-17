@@ -56,13 +56,13 @@ const RealTimePSI = props => {
 };
 
 RealTimePSI.propTypes = {
-  psi: PropTypes.object
+  psi: PropTypes.object,
 };
 
 const mapStateToProps = state => {
   const { common } = state;
   return {
-    psi: common && common.psi
+    psi: common && common.psi,
   };
 };
 

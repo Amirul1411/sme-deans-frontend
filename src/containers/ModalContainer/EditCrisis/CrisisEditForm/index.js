@@ -9,7 +9,7 @@ const crisisType = [
   "Rescue and Evacuation",
   "Fire Fighting",
   "Gas Leak Control",
-  "Others (please specify in description)"
+  "Others (please specify in description)",
 ];
 
 const assistanceType = [
@@ -17,7 +17,7 @@ const assistanceType = [
   "Rescue and Evacuation",
   "Fire Fighting",
   "Gas Leak Control",
-  "Others (please specify in description)"
+  "Others (please specify in description)",
 ];
 
 const createSelectionList = arr =>
@@ -29,7 +29,7 @@ const createSelectionList = arr =>
 
 class CrisisEditForm extends React.Component {
   state = {
-    confirmDirty: false
+    confirmDirty: false,
   };
 
   handleSubmit = e => {
@@ -68,9 +68,7 @@ class CrisisEditForm extends React.Component {
     if (!value) {
       autoCompleteResult = [];
     } else {
-      autoCompleteResult = [".com", ".org", ".net"].map(
-        domain => `${value}${domain}`
-      );
+      autoCompleteResult = [".com", ".org", ".net"].map(domain => `${value}${domain}`);
     }
     this.setState({ autoCompleteResult });
   };
@@ -80,14 +78,14 @@ class CrisisEditForm extends React.Component {
 
     const formItemLayout = {
       labelCol: {
-        sm: { span: 8 }
+        sm: { span: 8 },
       },
       wrapperCol: {
-        sm: { span: 15 }
-      }
+        sm: { span: 15 },
+      },
     };
     const prefixSelector = getFieldDecorator("prefix", {
-      initialValue: "65"
+      initialValue: "65",
     })(
       <Select style={{ width: 70 }}>
         <Option value="65">+65</Option>
@@ -112,16 +110,14 @@ class CrisisEditForm extends React.Component {
               {
                 required: true,
                 message: "Please input your name!",
-                whitespace: true
-              }
-            ]
+                whitespace: true,
+              },
+            ],
           })(<Input />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Mobile Number">
           {getFieldDecorator("phone", {
-            rules: [
-              { required: true, message: "Please input your mobile number!" }
-            ]
+            rules: [{ required: true, message: "Please input your mobile number!" }],
           })(<Input addonBefore={prefixSelector} style={{ width: "100%" }} />)}
         </FormItem>
         <FormItem {...formItemLayout} label={<span>Location</span>}>
@@ -130,9 +126,9 @@ class CrisisEditForm extends React.Component {
               {
                 required: true,
                 message: "Please input the location!",
-                whitespace: true
-              }
-            ]
+                whitespace: true,
+              },
+            ],
           })(<Input placeholder="Enter postal code to quickly navigate" />)}
         </FormItem>
         <FormItem {...formItemLayout} label={<span>Location 2</span>}>
@@ -140,9 +136,9 @@ class CrisisEditForm extends React.Component {
             rules: [
               {
                 required: false,
-                whitespace: true
-              }
-            ]
+                whitespace: true,
+              },
+            ],
           })(<Input placeholder="Room number, block number, street name..." />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Crisis Type">
@@ -151,9 +147,9 @@ class CrisisEditForm extends React.Component {
               {
                 type: "array",
                 required: true,
-                message: "Please select crisis type!"
-              }
-            ]
+                message: "Please select crisis type!",
+              },
+            ],
           })(
             <Select mode="multiple" placeholder="Please select favorite colors">
               {createSelectionList(crisisType)}
@@ -162,22 +158,17 @@ class CrisisEditForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="Crisis Description">
           {getFieldDecorator("others", {
-            rules: [{ required: false }]
-          })(
-            <Input
-              style={{ width: "100%" }}
-              placeholder="Anything we must know?"
-            />
-          )}
+            rules: [{ required: false }],
+          })(<Input style={{ width: "100%" }} placeholder="Anything we must know?" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Assistance Type">
           {getFieldDecorator("assistanceType", {
             rules: [
               {
                 type: "array",
-                required: false
-              }
-            ]
+                required: false,
+              },
+            ],
           })(
             <Select mode="multiple" placeholder="Select assistance(s) required">
               {createSelectionList(assistanceType)}
@@ -186,7 +177,7 @@ class CrisisEditForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="Assistance Description">
           {getFieldDecorator("others", {
-            rules: [{ required: false }]
+            rules: [{ required: false }],
           })(
             <Input
               style={{ width: "100%" }}

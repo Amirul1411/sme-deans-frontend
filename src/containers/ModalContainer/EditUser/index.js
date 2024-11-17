@@ -32,7 +32,7 @@ class _EditUserForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input password!" }]
+            rules: [{ required: true, message: "Please input password!" }],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -42,11 +42,7 @@ class _EditUserForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.createButton}
-          >
+          <Button type="primary" htmlType="submit" className={styles.createButton}>
             Confirm
           </Button>
         </FormItem>
@@ -59,20 +55,14 @@ _EditUserForm.propTypes = {
   form: PropTypes.object.isRequired,
   editUser: PropTypes.func.isRequired,
   userId: PropTypes.number.isRequired,
-  hideModal: PropTypes.func.isRequired
+  hideModal: PropTypes.func.isRequired,
 };
 
 const EditUser = props => {
   const EditUserForm = Form.create()(_EditUserForm);
   const { editUser, userId, hideModal } = props;
   return (
-    <Modal
-      centered
-      title="CHANGE PASSWORD"
-      visible
-      onCancel={props.hideModal}
-      footer={null}
-    >
+    <Modal centered title="CHANGE PASSWORD" visible onCancel={props.hideModal} footer={null}>
       <EditUserForm editUser={editUser} userId={userId} hideModal={hideModal} />
     </Modal>
   );
@@ -81,7 +71,7 @@ const EditUser = props => {
 EditUser.propTypes = {
   hideModal: PropTypes.func.isRequired,
   editUser: PropTypes.func.isRequired,
-  userId: PropTypes.number.isRequired
+  userId: PropTypes.number.isRequired,
 };
 
 export default EditUser;

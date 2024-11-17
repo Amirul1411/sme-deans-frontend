@@ -11,7 +11,7 @@ import * as styles from "./style.scss";
 // eslint-ignore-next-line
 class PageLogin extends React.Component {
   state = {
-    redirect: false
+    redirect: false,
   };
 
   setRedirect = () => {
@@ -43,17 +43,17 @@ class PageLogin extends React.Component {
 
 PageLogin.propTypes = {
   flag: PropTypes.bool.isRequired,
-  userLogin: PropTypes.func.isRequired
+  userLogin: PropTypes.func.isRequired,
 };
 
 export default connect(
   state => {
     const { staff } = state;
     return {
-      flag: staff.flag || false
+      flag: staff.flag || false,
     };
   },
   dispatch => ({
-    userLogin: form => dispatch(userLogin(form))
+    userLogin: form => dispatch(userLogin(form)),
   })
 )(PageLogin);

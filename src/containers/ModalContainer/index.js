@@ -12,15 +12,11 @@ import DoubleInput from "./DoubleInput";
 const ModalContainer = props => {
   switch (props.modalType) {
     case "CREATE_NEW_CRISIS":
-      return (
-        <CreateNewCrisis {...props.modalProps} hideModal={props.hideModal} />
-      );
+      return <CreateNewCrisis {...props.modalProps} hideModal={props.hideModal} />;
     case "EDIT_CRISIS":
       return <EditCrisis {...props.modalProps} hideModal={props.hideModal} />;
     case "DISPATCH_CRISIS":
-      return (
-        <DispatchCrisis {...props.modalProps} hideModal={props.hideModal} />
-      );
+      return <DispatchCrisis {...props.modalProps} hideModal={props.hideModal} />;
     case "ADD_USER":
       return <AddUser {...props.modalProps} hideModal={props.hideModal} />;
     case "EDIT_USER":
@@ -38,19 +34,15 @@ const mapStateToProps = state => {
   const { modal } = state;
   return {
     modalType: modal && modal.modalType,
-    modalProps: modal && modal.modalProps // for future use if need to pass props
+    modalProps: modal && modal.modalProps, // for future use if need to pass props
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    showModal: (modalType, modalProps) =>
-      dispatch(showModal(modalType, modalProps)),
-    hideModal: () => dispatch(hideModal())
+    showModal: (modalType, modalProps) => dispatch(showModal(modalType, modalProps)),
+    hideModal: () => dispatch(hideModal()),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalContainer);

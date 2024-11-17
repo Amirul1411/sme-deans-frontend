@@ -27,7 +27,7 @@ const RealTimeWeather = props => {
 RealTimeWeather.propTypes = {
   temperature: PropTypes.number,
   humidity: PropTypes.number,
-  rainfall: PropTypes.number
+  rainfall: PropTypes.number,
 };
 
 const mapStateToProps = state => {
@@ -35,7 +35,7 @@ const mapStateToProps = state => {
   return {
     temperature: common && common.temperature,
     humidity: common && common.humidity,
-    rainfall: common && common.rainfall
+    rainfall: common && common.rainfall,
   };
 };
 

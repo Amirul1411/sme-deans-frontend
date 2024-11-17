@@ -8,7 +8,7 @@ const Option = Select.Option;
 class CrisisDispatchForm extends React.Component {
   state = {
     confirmDirty: false,
-    autoCompleteResult: []
+    autoCompleteResult: [],
   };
 
   createEmergencyAgenciesList = arr =>
@@ -46,11 +46,11 @@ class CrisisDispatchForm extends React.Component {
 
     const formItemLayout = {
       labelCol: {
-        sm: { span: 8 }
+        sm: { span: 8 },
       },
       wrapperCol: {
-        sm: { span: 15 }
-      }
+        sm: { span: 15 },
+      },
     };
 
     return (
@@ -61,14 +61,11 @@ class CrisisDispatchForm extends React.Component {
               {
                 type: "array",
                 required: true,
-                message: "Please select emergency agencies!"
-              }
-            ]
+                message: "Please select emergency agencies!",
+              },
+            ],
           })(
-            <Select
-              mode="multiple"
-              placeholder="Select emergency agencies to notify"
-            >
+            <Select mode="multiple" placeholder="Select emergency agencies to notify">
               {this.createEmergencyAgenciesList(this.props.emergencyAgencies)}
             </Select>
           )}
@@ -87,7 +84,7 @@ CrisisDispatchForm.propTypes = {
   hideModal: PropTypes.func.isRequired,
   crisisId: PropTypes.number.isRequired,
   emergencyAgencies: PropTypes.array,
-  dispatchCrisis: PropTypes.func.isRequired
+  dispatchCrisis: PropTypes.func.isRequired,
 };
 
 export default Form.create()(CrisisDispatchForm);

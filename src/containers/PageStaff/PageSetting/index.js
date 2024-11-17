@@ -10,7 +10,7 @@ import {
   addEmergencyAgencies,
   editSiteSettings,
   editEmergencyAgencies,
-  showModal
+  showModal,
 } from "@redux/actions";
 import { Button, Tag, message } from "antd";
 import EmergencyAgenciesTable from "./EmergencyAgenciesTable";
@@ -20,8 +20,8 @@ class PageSetting extends React.Component {
   state = {
     reportingEmail: {
       edited: false,
-      content: null
-    }
+      content: null,
+    },
   };
 
   componentDidMount() {
@@ -58,8 +58,8 @@ class PageSetting extends React.Component {
       ...this.state,
       reportingEmail: {
         edited: true,
-        content: e.target.value
-      }
+        content: e.target.value,
+      },
     });
   };
 
@@ -140,7 +140,7 @@ class PageSetting extends React.Component {
             onClick={() =>
               this.props.showModal("SINGLE_INPUT", {
                 title: "ADD CRISIS TYPE",
-                handler: this.addCrisisType
+                handler: this.addCrisisType,
               })
             }
           >
@@ -154,7 +154,7 @@ class PageSetting extends React.Component {
             onClick={() =>
               this.props.showModal("SINGLE_INPUT", {
                 title: "ADD ASSISTANCE TYPE",
-                handler: this.addAssistanceType
+                handler: this.addAssistanceType,
               })
             }
           >
@@ -170,7 +170,7 @@ class PageSetting extends React.Component {
                 title: "ADD EMERGENCY AGENCIES",
                 handler: this.addEmergencyAgencies,
                 labelA: "Agency Name",
-                labelB: "Phone Number"
+                labelB: "Phone Number",
               })
             }
           >
@@ -210,7 +210,7 @@ const mapStateToProps = state => {
   return {
     crisisType: system && system.crisisType,
     assistanceType: system && system.assistanceType,
-    emergencyAgencies: system && system.emergencyAgencies
+    emergencyAgencies: system && system.emergencyAgencies,
   };
 };
 
@@ -225,7 +225,7 @@ PageSetting.propTypes = {
   editEmergencyAgencies: PropTypes.func.isRequired,
   emergencyAgencies: PropTypes.array,
   editSiteSettings: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired
+  showModal: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -234,14 +234,9 @@ const mapDispatchToProps = dispatch => ({
   fetchTypes: () => dispatch(fetchTypes()),
   getEmergencyAgencies: () => dispatch(getEmergencyAgencies()),
   addEmergencyAgencies: form => dispatch(addEmergencyAgencies(form)),
-  editEmergencyAgencies: (id, form) =>
-    dispatch(editEmergencyAgencies(id, form)),
+  editEmergencyAgencies: (id, form) => dispatch(editEmergencyAgencies(id, form)),
   editSiteSettings: form => dispatch(editSiteSettings(form)),
-  showModal: (modalType, modalProps) =>
-    dispatch(showModal(modalType, modalProps))
+  showModal: (modalType, modalProps) => dispatch(showModal(modalType, modalProps)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageSetting);
+export default connect(mapStateToProps, mapDispatchToProps)(PageSetting);

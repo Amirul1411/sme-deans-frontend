@@ -24,10 +24,8 @@ class PageStaff extends React.Component {
 
   render() {
     const { crises } = this.props;
-    const numOfPending =
-      crises && crises.filter(crisis => crisis.crisis_status === "PD").length;
-    const numOfDispatched =
-      crises && crises.filter(crisis => crisis.crisis_status === "DP").length;
+    const numOfPending = crises && crises.filter(crisis => crisis.crisis_status === "PD").length;
+    const numOfDispatched = crises && crises.filter(crisis => crisis.crisis_status === "DP").length;
     return (
       <React.Fragment>
         <NavBar />
@@ -49,21 +47,9 @@ class PageStaff extends React.Component {
           </div>
           <div className={styles.right}>
             <Switch>
-              <Route
-                exact
-                path={ROUTES.ROUTE_DASHBOARD}
-                component={PageCallCenter}
-              />
-              <Route
-                exact
-                path={ROUTES.ROUTE_USER_CENTER}
-                component={PageUserCenter}
-              />
-              <Route
-                exact
-                path={ROUTES.ROUTE_SETTING}
-                component={PageSetting}
-              />
+              <Route exact path={ROUTES.ROUTE_DASHBOARD} component={PageCallCenter} />
+              <Route exact path={ROUTES.ROUTE_USER_CENTER} component={PageUserCenter} />
+              <Route exact path={ROUTES.ROUTE_SETTING} component={PageSetting} />
               {/* fallback */}
               <Route path={ROUTES.ROUTE_STAFF} component={PageCallCenter} />
             </Switch>
@@ -81,7 +67,7 @@ PageStaff.propTypes = {
   getCrises: PropTypes.func.isRequired,
   crisisType: PropTypes.object,
   isAdmin: PropTypes.bool.isRequired,
-  assistanceType: PropTypes.object
+  assistanceType: PropTypes.object,
 };
 
 const mapStateToProps = state => {
@@ -90,16 +76,13 @@ const mapStateToProps = state => {
     isAdmin: staff && staff.isAdmin,
     crisisType: system && system.crisisType,
     assistanceType: system && system.assistanceType,
-    crises: common && common.crises
+    crises: common && common.crises,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   fetchTypes: () => dispatch(fetchTypes()),
-  getCrises: () => dispatch(getCrises())
+  getCrises: () => dispatch(getCrises()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageStaff);
+export default connect(mapStateToProps, mapDispatchToProps)(PageStaff);

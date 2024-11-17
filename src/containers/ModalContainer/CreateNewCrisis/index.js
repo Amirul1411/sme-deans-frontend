@@ -5,13 +5,7 @@ import CrisisReportForm from "./CrisisReportForm";
 
 const CreateNewCrisis = props => {
   return (
-    <Modal
-      centered
-      title="CREATE NEW CRISIS"
-      visible
-      onCancel={props.hideModal}
-      footer={null}
-    >
+    <Modal centered title="CREATE NEW CRISIS" visible onCancel={props.hideModal} footer={null}>
       <CrisisReportForm {...props} />
     </Modal>
   );
@@ -22,7 +16,7 @@ CreateNewCrisis.propTypes = {
   crisisType: PropTypes.object.isRequired,
   assistanceType: PropTypes.object.isRequired,
   reportCrises: PropTypes.func.isRequired,
-  getCrises: PropTypes.func.isRequired
+  getCrises: PropTypes.func.isRequired,
 };
 
 export default CreateNewCrisis;

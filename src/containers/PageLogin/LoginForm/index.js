@@ -37,7 +37,7 @@ class LoginForm extends React.Component {
       <Form onSubmit={this.handleSubmit} className={styles.loginForm}>
         <FormItem>
           {getFieldDecorator("username", {
-            rules: [{ required: true, message: "Please input your username!" }]
+            rules: [{ required: true, message: "Please input your username!" }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -47,7 +47,7 @@ class LoginForm extends React.Component {
         </FormItem>
         <FormItem>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }]
+            rules: [{ required: true, message: "Please input your Password!" }],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -59,13 +59,9 @@ class LoginForm extends React.Component {
         <FormItem>
           {getFieldDecorator("remember", {
             valuePropName: "checked",
-            initialValue: true
+            initialValue: true,
           })(<Checkbox>Remember me</Checkbox>)}
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.loginButton}
-          >
+          <Button type="primary" htmlType="submit" className={styles.loginButton}>
             Log in
           </Button>
         </FormItem>
@@ -78,7 +74,7 @@ LoginForm.propTypes = {
   flag: PropTypes.bool.isRequired,
   userLogin: PropTypes.func.isRequired,
   setRedirect: PropTypes.func.isRequired,
-  form: PropTypes.object.isRequired
+  form: PropTypes.object.isRequired,
 };
 
 export default Form.create()(LoginForm);

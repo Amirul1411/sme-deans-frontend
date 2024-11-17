@@ -10,7 +10,7 @@ import * as styles from "./style.scss";
 
 class PageReport extends React.Component {
   state = {
-    completed: false
+    completed: false,
   };
 
   componentDidMount() {
@@ -34,14 +34,12 @@ class PageReport extends React.Component {
         <div className={styles.container}>
           <div className={styles.header}>Report Crisis</div>
           {completed ? (
-            <div style={{ marginTop: "2rem" }}>
-              Thank you for reporting the crisis!
-            </div>
+            <div style={{ marginTop: "2rem" }}>Thank you for reporting the crisis!</div>
           ) : (
             <React.Fragment>
               <div style={{ marginTop: "2rem" }}>
-                If you prefer to report over the phone, please call us directly
-                at <strong>12345678</strong>.
+                If you prefer to report over the phone, please call us directly at{" "}
+                <strong>12345678</strong>.
               </div>
               <div className={styles.form}>
                 <CrisisReportForm
@@ -68,7 +66,7 @@ PageReport.propTypes = {
   fetchTypes: PropTypes.func.isRequired,
   getCrises: PropTypes.func.isRequired,
   reportCrises: PropTypes.func.isRequired,
-  flag: PropTypes.bool.isRequired
+  flag: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -77,17 +75,14 @@ const mapStateToProps = state => {
     flag: common && common.flag,
     crisisType: system && system.crisisType,
     assistanceType: system && system.assistanceType,
-    crises: common && common.crises
+    crises: common && common.crises,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   fetchTypes: () => dispatch(fetchTypes()),
   getCrises: () => dispatch(getCrises()),
-  reportCrises: form => dispatch(reportCrises(form))
+  reportCrises: form => dispatch(reportCrises(form)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageReport);
+export default connect(mapStateToProps, mapDispatchToProps)(PageReport);

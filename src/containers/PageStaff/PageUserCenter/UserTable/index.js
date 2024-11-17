@@ -7,18 +7,18 @@ const COLUMNS = [
   {
     title: "Username",
     dataIndex: "username",
-    key: "username"
+    key: "username",
   },
   {
     title: "Is Admin",
     dataIndex: "adminStatus",
-    key: "adminStatus"
+    key: "adminStatus",
   },
   {
     title: "Action",
     dataIndex: "action",
-    key: "action"
-  }
+    key: "action",
+  },
 ];
 
 const UserTable = props => {
@@ -45,27 +45,23 @@ const UserTable = props => {
         <div className={styles.actions}>
           <Button
             type="dashed"
-            onClick={() =>
-              showEditUserModal({ userId: val.id, editUser: editUser })
-            }
+            onClick={() => showEditUserModal({ userId: val.id, editUser: editUser })}
           >
             Change Password
           </Button>
         </div>
-      )
+      ),
     }));
   };
 
-  return (
-    <Table dataSource={createDataSource(props.userList)} columns={COLUMNS} />
-  );
+  return <Table dataSource={createDataSource(props.userList)} columns={COLUMNS} />;
 };
 
 UserTable.propTypes = {
   userList: PropTypes.array.isRequired,
   editUser: PropTypes.func.isRequired,
   showEditUserModal: PropTypes.func.isRequired,
-  currentUser: PropTypes.string.isRequired
+  currentUser: PropTypes.string.isRequired,
 };
 
 export default UserTable;
