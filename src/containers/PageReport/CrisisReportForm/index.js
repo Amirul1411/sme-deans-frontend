@@ -5,9 +5,70 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from "react-places-autocomplete";
+import { connect } from "react-redux";
+
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+
+const translations = {
+  en: {
+    yourName: "Your Name",
+    mobileNumber: "Mobile Number",
+    location: "Location",
+    location2: "Location 2",
+    crisisType: "Crisis Type",
+    crisisDescription: "Crisis Description",
+    assistanceType: "Assistance Type",
+    assistanceDescription: "Assistance Description",
+    submit: "Submit",
+    questionTooltip: "Your real name",
+    crisisDescriptionPlaceholder: "Anything we must know?",
+    assistanceDescriptionPlaceholder: "If you selected others, specify your assistance request here"
+  },
+  ms: {
+    yourName: "Nama Anda",
+    mobileNumber: "Nombor Telefon",
+    location: "Lokasi",
+    location2: "Lokasi 2",
+    crisisType: "Jenis Krisis",
+    crisisDescription: "Keterangan Krisis",
+    assistanceType: "Jenis Bantuan",
+    assistanceDescription: "Keterangan Bantuan",
+    submit: "Hantar",
+    questionTooltip: "Nama sebenar anda",
+    crisisDescriptionPlaceholder: "Apa-apa yang perlu kami ketahui?",
+    assistanceDescriptionPlaceholder: "Jika anda memilih lain-lain, nyatakan permintaan bantuan anda di sini"
+  },
+  zh: {
+    yourName: "您的姓名",
+    mobileNumber: "手机号码",
+    location: "地点",
+    location2: "第二地点",
+    crisisType: "危机类型",
+    crisisDescription: "危机描述",
+    assistanceType: "援助类型",
+    assistanceDescription: "援助描述",
+    submit: "提交",
+    questionTooltip: "您的真实姓名",
+    crisisDescriptionPlaceholder: "我们需要知道的事情？",
+    assistanceDescriptionPlaceholder: "如果您选择了其他，请在这里指定您的援助请求"
+  },
+  tm: {
+    yourName: "உங்கள் பெயர்",
+    mobileNumber: "கைபேசி எண்",
+    location: "இடம்",
+    location2: "இரண்டாவது இடம்",
+    crisisType: "விபத்து வகை",
+    crisisDescription: "விபத்து விவரம்",
+    assistanceType: "உதவி வகை",
+    assistanceDescription: "உதவி விவரம்",
+    submit: "சமர்ப்பிக்கவும்",
+    questionTooltip: "உங்கள் உண்மையான பெயர்",
+    crisisDescriptionPlaceholder: "நாம் அறிவது அவசியமான விஷயங்கள்?",
+    assistanceDescriptionPlaceholder: "நீங்கள் மற்றவை தேர்ந்தெடுத்திருந்தால், உங்கள் உதவி கோரிக்கையை இங்கு குறிப்பிடவும்"
+  }
+};
 
 const createSelectionList = obj =>
   Object.keys(obj).map((val, index) => (
@@ -97,6 +158,8 @@ class CrisisReportForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { language } = this.props;
+    const t = translations[language.language] || translations.en;
 
     const formItemLayout = {
       labelCol: {
@@ -120,7 +183,7 @@ class CrisisReportForm extends React.Component {
           {...formItemLayout}
           label={
             <span>
-              Your Name&nbsp;
+              {t.yourName}&nbsp;
               <Tooltip title="Your real name">
                 <Icon type="question-circle-o" />
               </Tooltip>
@@ -135,16 +198,16 @@ class CrisisReportForm extends React.Component {
                 whitespace: true
               }
             ]
-          })(<Input placeholder="Enter your name..." />)}
+          })(<Input placeholder={t.yourName}  />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="Mobile Number">
+        <FormItem {...formItemLayout} label={t.mobileNumber} >
           {getFieldDecorator("phone", {
             rules: [
               { required: true, message: "Please input your mobile number!" }
             ]
           })(<Input addonBefore={prefixSelector} style={{ width: "100%" }} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label={<span>Location</span>}>
+        <FormItem {...formItemLayout} label={<span>{t.location} </span>}>
           {getFieldDecorator("location", {
             rules: [
               {
@@ -200,7 +263,7 @@ class CrisisReportForm extends React.Component {
             </PlacesAutocomplete>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label={<span>Location 2</span>}>
+        <FormItem {...formItemLayout} label={<span>{t.location2}</span>}>
           {getFieldDecorator("location_2", {
             rules: [
               {
@@ -210,7 +273,7 @@ class CrisisReportForm extends React.Component {
             ]
           })(<Input placeholder="Room number, block number, street name..." />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="Crisis Type">
+        <FormItem {...formItemLayout} label={t.crisisType} >
           {getFieldDecorator("crisisType", {
             rules: [
               {
@@ -225,7 +288,7 @@ class CrisisReportForm extends React.Component {
             </Select>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Crisis Description">
+        <FormItem {...formItemLayout} label={t.crisisDescription}>
           {getFieldDecorator("crisisDescription", {
             rules: [{ required: false }]
           })(
@@ -235,7 +298,7 @@ class CrisisReportForm extends React.Component {
             />
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Assistance Type">
+        <FormItem {...formItemLayout} label={t.assistanceType} >
           {getFieldDecorator("assistanceType", {
             rules: [
               {
@@ -249,7 +312,7 @@ class CrisisReportForm extends React.Component {
             </Select>
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="Assistance Description">
+        <FormItem {...formItemLayout} label={t.assistanceDescription} >
           {getFieldDecorator("assistanceDescription", {
             rules: [{ required: false }]
           })(
@@ -265,7 +328,7 @@ class CrisisReportForm extends React.Component {
             htmlType="submit"
             style={{ width: "30%", marginTop: "2rem", marginRight: "2rem" }}
           >
-            Submit
+            {t.submit} 
           </Button>
         </FormItem>
       </Form>
@@ -281,4 +344,8 @@ CrisisReportForm.propTypes = {
   setComplete: PropTypes.func.isRequired
 };
 
-export default Form.create()(CrisisReportForm);
+const mapStateToProps = state => ({
+  language: state.language
+});
+
+export default connect(mapStateToProps)(Form.create()(CrisisReportForm));
