@@ -4,6 +4,33 @@ import PropTypes from "prop-types";
 import { Table, Tag } from "antd";
 // import * as styles from "./style.scss";
 
+const translations = {
+  en: {
+    crisisType: "Crisis Type",
+    location: "Location",
+    description: "Description",
+    reportTime: "Report Time"
+  },
+  ms: {
+    crisisType: "Jenis Krisis",
+    location: "Lokasi",
+    description: "Deskripsi",
+    reportTime: "Masa Laporan"
+  },
+  zh: {
+    crisisType: "危机类型",
+    location: "地点",
+    description: "描述",
+    reportTime: "报告时间"
+  },
+  tm: {
+    crisisType: "பெரும் அசம்பாவிதம் வகை",
+    location: "இடம்",
+    description: "விவரணம்",
+    reportTime: "அறிக்கை நேரம்"
+  }
+};
+
 const createDataSource = (crisisList, crisisType) =>
   crisisList
     .filter(crisis => crisis.crisis_status !== "RS")
@@ -39,28 +66,31 @@ const createDataSource = (crisisList, crisisType) =>
     });
 
 const ActiveCrisisListTable = props => {
-  const { crises, crisisType } = props;
+  const { crises, crisisType, language } = props;
+
+  const columnTitles = translations[language.language] || translations.en;
+
   const COLUMNS = [
     {
-      title: "Crisis Type",
+      title: columnTitles.crisisType,
       dataIndex: "crisisType",
       key: "crisisType",
       width: 100,
     },
     {
-      title: "Location",
+      title: columnTitles.location,
       dataIndex: "location",
       key: "location",
       width: 300,
     },
     {
-      title: "Description",
+      title: columnTitles.description,
       key: "description",
       dataIndex: "description",
       width: 200,
     },
     {
-      title: "Report Time",
+      title: columnTitles.reportTime,
       key: "reportTime",
       dataIndex: "reportTime",
       width: 150,
@@ -73,6 +103,7 @@ ActiveCrisisListTable.propTypes = {
   crisisType: PropTypes.object,
   assistanceType: PropTypes.object,
   crises: PropTypes.array,
+  language: PropTypes.string.isRequired
 };
 
 export default connect(state => {
@@ -80,5 +111,6 @@ export default connect(state => {
   return {
     crisisType: system && system.crisisType,
     assistanceType: system && system.assistanceType,
+    language: state.language,
   };
 })(ActiveCrisisListTable);

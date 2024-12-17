@@ -8,7 +8,21 @@ import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
 import * as styles from "./style.scss";
 
-// eslint-ignore-next-line
+const translations = {
+  en: {
+    staffLogin: "Staff Login"
+  },
+  ms: {
+    staffLogin: "Log Masuk Staf"
+  },
+  zh: {
+    staffLogin: "员工登录"
+  },
+  tm: {
+    staffLogin: "பணியாளர் உள்நுழைவு"
+  }
+};
+
 class PageLogin extends React.Component {
   state = {
     redirect: false,
@@ -19,13 +33,17 @@ class PageLogin extends React.Component {
   };
 
   render() {
+    const { language } = this.props;
+    const columnTitles = translations[language.language] || translations.en;
+
     if (this.state.redirect) return <Redirect to="/staff/dashboard" />;
+
     return (
       <React.Fragment>
         <NavBar />
         <div className={styles.container}>
           <div className={styles.innerContainer}>
-            <div className={styles.header}>Staff Login</div>
+            <div className={styles.header}>{columnTitles.staffLogin}</div>
             <div className={styles.form}>
               <LoginForm
                 setRedirect={this.setRedirect}
@@ -44,6 +62,7 @@ class PageLogin extends React.Component {
 PageLogin.propTypes = {
   flag: PropTypes.bool.isRequired,
   userLogin: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired
 };
 
 export default connect(
@@ -51,6 +70,7 @@ export default connect(
     const { staff } = state;
     return {
       flag: staff.flag || false,
+      language: state.language,
     };
   },
   dispatch => ({

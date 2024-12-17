@@ -25,17 +25,35 @@ const initialState = {
     modalType: null,
     modalProps: null,
   },
+  language: {
+    language: "en"
+  }
+};
+
+const language = (state = initialState.language, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.SET_LANGUAGE:
+      return {
+        ...state,
+        language: payload
+      };
+    default:
+      return state;
+  }
 };
 
 const system = (state = initialState.system, action) => {
   const { type, payload } = action;
-  const transform = obj => {
+  
+  const transform = (obj) => {
     const type = {};
-    obj.forEach(val => {
+    obj.forEach((val) => {
       type[val.id] = val.name;
     });
     return type;
   };
+
   switch (type) {
     case actionTypes.FETCH_CRISIS_TYPE_SUCCESS:
       return {
@@ -351,10 +369,15 @@ const crisisReducer = (state = initialState, action) => {
         ...state,
         crises: handleDispatchUpdate(state.crises, action.payload.id, action.payload.dispatch)
       };
+    };
+  };
 
-    default:
-      return state;
-  }
-};
+const rootReducer = combineReducers({
+  language,
+  system,
+  common,
+  modal,
+  staff
+});
 
-export default combineReducers({ modal, common, system, staff });
+export default rootReducer;
