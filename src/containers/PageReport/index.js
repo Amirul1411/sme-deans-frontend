@@ -36,7 +36,7 @@ const translations = {
 
 class PageReport extends React.Component {
   state = {
-    completed: false
+    completed: false,
   };
 
   componentDidMount() {
@@ -63,13 +63,11 @@ class PageReport extends React.Component {
         <div className={styles.container}>
           <div className={styles.header}>{translationsText.reportCrisis}</div>
           {completed ? (
-            <div style={{ marginTop: "2rem" }}>
-              {translationsText.thankYou}
-            </div>
+            <div style={{ marginTop: "2rem" }}> {translationsText.thankYou}</div>
           ) : (
             <React.Fragment>
               <div style={{ marginTop: "2rem" }}>
-                {translationsText.callUs}{" "}
+              {translationsText.callUs}{" "}
                 <strong>{translationsText.phoneNumber}</strong>.
               </div>
               <div className={styles.form}>
@@ -118,7 +116,4 @@ const mapDispatchToProps = dispatch => ({
   reportCrises: form => dispatch(reportCrises(form)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageReport);
+export default connect(mapStateToProps, mapDispatchToProps)(PageReport);

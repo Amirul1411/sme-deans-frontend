@@ -17,16 +17,10 @@ const DispatchCrisis = props => {
     crisis_type,
     crisis_description,
     crisis_assistance,
-    crisis_assistance_description
+    crisis_assistance_description,
   } = props.crisis;
   return (
-    <Modal
-      centered
-      title="DISPATCH CRISIS"
-      visible
-      onCancel={props.hideModal}
-      footer={null}
-    >
+    <Modal centered title="DISPATCH CRISIS" visible onCancel={props.hideModal} footer={null}>
       <div className={styles.summary}>
         <div className={styles.summaryHeader}>SUMMARY</div>
         <div className={styles.summaryHint}>
@@ -42,7 +36,7 @@ const DispatchCrisis = props => {
                 month: "short",
                 day: "numeric",
                 hour: "numeric",
-                minute: "numeric"
+                minute: "numeric",
               });
             })()}
           </div>
@@ -51,9 +45,7 @@ const DispatchCrisis = props => {
           <div className={styles.label}>Mobile Number:</div>
           <div className={styles.value}>+65 {mobile_number}</div>
           <div className={styles.label}>Location:</div>
-          <div className={styles.value}>
-            {crisis_location1.replace(/"/g, "")}
-          </div>
+          <div className={styles.value}>{crisis_location1.replace(/"/g, "")}</div>
           <div className={styles.label}>Location 2:</div>
           <div className={styles.value}>{crisis_location2}</div>
           <div className={styles.label}>Crisis Type:</div>
@@ -88,7 +80,7 @@ DispatchCrisis.propTypes = {
   crisis: PropTypes.object,
   crisisType: PropTypes.object,
   assistanceType: PropTypes.object,
-  emergencyAgencies: PropTypes.array
+  emergencyAgencies: PropTypes.array,
 };
 
 const mapStateToProps = state => {
@@ -96,16 +88,12 @@ const mapStateToProps = state => {
   return {
     crisisType: system && system.crisisType,
     assistanceType: system && system.assistanceType,
-    emergencyAgencies: system && system.emergencyAgencies
+    emergencyAgencies: system && system.emergencyAgencies,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  dispatchCrisis: (id, phoneNumberToNotify) =>
-    dispatch(dispatchCrisis(id, phoneNumberToNotify))
+  dispatchCrisis: (id, phoneNumberToNotify) => dispatch(dispatchCrisis(id, phoneNumberToNotify)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DispatchCrisis);
+export default connect(mapStateToProps, mapDispatchToProps)(DispatchCrisis);

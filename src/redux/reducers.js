@@ -6,12 +6,12 @@ const initialState = {
     currentUser: null,
     isAdmin: false,
     flag: false,
-    userList: null
+    userList: null,
   },
   system: {
     crisisType: null,
     assistanceType: null,
-    emergencyAgencies: null
+    emergencyAgencies: null,
   },
   common: {
     flag: false,
@@ -19,11 +19,11 @@ const initialState = {
     psi: null,
     humidity: null,
     temperature: null,
-    rainfall: null
+    rainfall: null,
   },
   modal: {
     modalType: null,
-    modalProps: null
+    modalProps: null,
   },
   language: {
     language: "en"
@@ -58,17 +58,191 @@ const system = (state = initialState.system, action) => {
     case actionTypes.FETCH_CRISIS_TYPE_SUCCESS:
       return {
         ...state,
-        crisisType: transform(payload)
+        crisisType: transform(payload),
       };
     case actionTypes.FETCH_ASSISTANCE_TYPE_SUCCESS:
       return {
         ...state,
-        assistanceType: transform(payload)
+        assistanceType: transform(payload),
       };
     case actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS:
       return {
         ...state,
-        emergencyAgencies: payload
+        emergencyAgencies: payload,
+      };
+    default:
+      return state;
+  }
+};
+
+// eslint-disable-next-line
+const staff = (state = initialState.staff, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.USER_LOGIN_REQUESTED:
+      return {
+        ...state,
+        flag: false, // reset flag
+      };
+    case actionTypes.USER_LOGIN_SUCCESS:
+      localStorage.setItem("token", payload.key); // set token
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.USER_LOGIN_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.USER_LOGOUT_REQUESTED:
+      return {
+        ...state,
+        flag: false, // reset flag
+      };
+    case actionTypes.USER_LOGOUT_SUCCESS:
+      localStorage.removeItem("token"); // remove token
+      return {
+        ...state,
+        currentUser: null,
+        isAdmin: false,
+        flag: true,
+      };
+    case actionTypes.USER_LOGOUT_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.FETCH_USER_LIST_SUCCESS:
+      return {
+        ...state,
+        userList: payload,
+      };
+    case actionTypes.FETCH_CURRENT_USER_SUCCESS:
+      return {
+        ...state,
+        currentUser: payload.username,
+        isAdmin: payload.is_staff,
+      };
+    case actionTypes.RESOLVE_CRISIS_REQUESTED:
+      return {
+        ...state,
+        flag: false, // reset flag
+      };
+    case actionTypes.RESOLVE_CRISIS_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.RESOLVE_CRISIS_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_USER_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_USER_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.ADD_USER_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.EDIT_USER_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.EDIT_USER_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.EDIT_USER_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_CRISIS_TYPE_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_CRISIS_TYPE_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.ADD_CRISIS_TYPE_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_ASSISTANCE_TYPE_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_ASSISTANCE_TYPE_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.ADD_ASSISTANCE_TYPE_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_EMERGENCY_AGENCIES_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.ADD_EMERGENCY_AGENCIES_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.ADD_EMERGENCY_AGENCIES_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.EDIT_SITE_SETTINGS_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.EDIT_SITE_SETTINGS_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.EDIT_SITE_SETTINGS_FAILURE:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.EDIT_EMERGENCY_AGENCIES_REQUESTED:
+      return {
+        ...state,
+        flag: false,
+      };
+    case actionTypes.EDIT_EMERGENCY_AGENCIES_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.EDIT_EMERGENCY_AGENCIES_FAILURE:
+      return {
+        ...state,
+        flag: false,
       };
     default:
       return state;
@@ -81,27 +255,45 @@ const common = (state = initialState.common, action) => {
     case actionTypes.FETCH_CRISIS_SUCCESS:
       return {
         ...state,
-        crises: payload
+        crises: payload,
       };
     case actionTypes.FETCH_PSI_SUCCESS:
       return {
         ...state,
-        psi: payload
+        psi: {
+          status: payload && payload.api_info && payload.api_info.status,
+          hourly: payload && payload.items && payload.items[0].readings.no2_one_hour_max,
+        },
       };
     case actionTypes.FETCH_HUMIDITY_SUCCESS:
       return {
         ...state,
-        humidity: payload
+        humidity: payload && payload.items && payload.items[0].readings[0].value,
       };
     case actionTypes.FETCH_RAINFALL_SUCCESS:
       return {
         ...state,
-        rainfall: payload
+        rainfall: payload && payload.items && payload.items[0].readings[23].value,
       };
     case actionTypes.FETCH_TEMPERATURE_SUCCESS:
       return {
         ...state,
-        temperature: payload
+        temperature: payload && payload.items && payload.items[0].readings[0].value,
+      };
+    case actionTypes.REPORT_CRISIS_REQUESTED:
+      return {
+        ...state,
+        flag: false, // reset flag
+      };
+    case actionTypes.REPORT_CRISIS_SUCCESS:
+      return {
+        ...state,
+        flag: true,
+      };
+    case actionTypes.REPORT_CRISIS_FAILURE:
+      return {
+        ...state,
+        flag: false,
       };
     default:
       return state;
@@ -115,48 +307,70 @@ const modal = (state = initialState.modal, action) => {
       return {
         ...state,
         modalType: payload.modalType,
-        modalProps: payload.modalProps
+        modalProps: payload.modalProps,
       };
     case actionTypes.MODAL_HIDE:
       return {
         ...state,
         modalType: null,
-        modalProps: null
+        modalProps: null,
       };
     default:
       return state;
   }
 };
 
-const staff = (state = initialState.staff, action) => {
-  const { type, payload } = action;
-  switch (type) {
-    case actionTypes.FETCH_USER_LIST_SUCCESS:
-      return {
-        ...state,
-        userList: payload
-      };
-    case actionTypes.FETCH_USER_LIST_FAILURE:
-      return {
-        ...state,
-        userList: null
-      };
-    case actionTypes.USER_LOGIN_SUCCESS:
-      return {
-        ...state,
-        currentUser: payload.user,
-        isAdmin: payload.user.isAdmin
-      };
-    case actionTypes.USER_LOGOUT_SUCCESS:
-      return {
-        ...state,
-        currentUser: null,
-        isAdmin: false
-      };
-    default:
-      return state;
-  }
+// Helper functions to handle specific state updates
+const handleCrisisUpdate = (crises, updatedCrisis) => {
+  return crises.map(crisis => 
+    crisis.id === updatedCrisis.id ? updatedCrisis : crisis
+  );
 };
+
+const handleStatusUpdate = (crises, crisisId, newStatus) => {
+  return crises.map(crisis => 
+    crisis.id === crisisId 
+      ? { ...crisis, status: newStatus }
+      : crisis
+  );
+};
+
+const handleDispatchUpdate = (crises, crisisId, dispatchInfo) => {
+  return crises.map(crisis => 
+    crisis.id === crisisId 
+      ? { ...crisis, dispatch: dispatchInfo }
+      : crisis
+  );
+};
+
+// Main reducer with reduced complexity
+const crisisReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_CRISES_SUCCESS:
+      return {
+        ...state,
+        crises: action.payload
+      };
+
+    case UPDATE_CRISIS_SUCCESS:
+      return {
+        ...state,
+        crises: handleCrisisUpdate(state.crises, action.payload)
+      };
+
+    case UPDATE_CRISIS_STATUS_SUCCESS:
+      return {
+        ...state,
+        crises: handleStatusUpdate(state.crises, action.payload.id, action.payload.status)
+      };
+
+    case UPDATE_CRISIS_DISPATCH_SUCCESS:
+      return {
+        ...state,
+        crises: handleDispatchUpdate(state.crises, action.payload.id, action.payload.dispatch)
+      };
+    };
+  };
 
 const rootReducer = combineReducers({
   language,

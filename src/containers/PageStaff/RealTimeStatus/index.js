@@ -32,7 +32,7 @@ const RealTimeStatus = props => (
 
 RealTimeStatus.propTypes = {
   numOfPending: PropTypes.number.isRequired,
-  numOfDispatched: PropTypes.number.isRequired
+  numOfDispatched: PropTypes.number.isRequired,
 };
 
 export default RealTimeStatus;

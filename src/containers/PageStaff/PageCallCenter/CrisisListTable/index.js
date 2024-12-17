@@ -8,13 +8,13 @@ import * as styles from "./style.scss";
 const statusMap = {
   PD: "Pending",
   DP: "Dispatched",
-  RS: "Resolved"
+  RS: "Resolved",
 };
 
 const statusOrder = {
   PD: 0,
   DP: 1,
-  RS: 2
+  RS: 2,
 };
 
 // eslint-disable-next-line max-params
@@ -25,17 +25,14 @@ const resolve = (id, flag, resolveCrisis, getCrises, undo) => {
     onOk() {
       resolveCrisis(id, undo)
         .then(() => {
-          message.success(
-            `Crisis has been ${undo ? "activated" : "resolved"}.`,
-            2
-          );
+          message.success(`Crisis has been ${undo ? "activated" : "resolved"}.`, 2);
           getCrises();
         })
         .catch(error => console.log(error));
     },
     onCancel() {
       console.log("Cancel");
-    }
+    },
   });
 };
 
@@ -44,26 +41,26 @@ const COLUMNS = [
     title: "Crisis Type",
     dataIndex: "crisisType",
     key: "crisisType",
-    width: 100
+    width: 100,
   },
   {
     title: "Location",
     dataIndex: "location",
     key: "location",
-    width: 300
+    width: 300,
   },
   {
     title: "Action",
     dataIndex: "action",
     key: "action",
-    width: 150
+    width: 150,
   },
   {
     title: "Status",
     key: "status",
     dataIndex: "status",
-    width: 100
-  }
+    width: 100,
+  },
 ];
 
 const createDataSource = (
@@ -106,7 +103,7 @@ const createDataSource = (
                   default:
                     return "black";
                 }
-              })()
+              })(),
             }}
           >
             {statusMap[status]}
@@ -121,23 +118,18 @@ const createDataSource = (
             >
               Edit
             </Button> */}
-            <Button
-              disabled={status === "RS"}
-              onClick={() => dispatchCrisis(crisis)}
-            >
+            <Button disabled={status === "RS"} onClick={() => dispatchCrisis(crisis)}>
               Dispatch
             </Button>
             <Button
-              onClick={() =>
-                resolve(id, flag, resolveCrisis, getCrises, status === "RS")
-              }
+              onClick={() => resolve(id, flag, resolveCrisis, getCrises, status === "RS")}
               type="danger"
             >
               {status === "RS" ? "Activate" : "Resolve"}
             </Button>
           </div>
         ),
-        detail: crisis
+        detail: crisis,
       };
     });
 
@@ -174,7 +166,7 @@ CrisisListTable.propTypes = {
   assistanceType: PropTypes.object,
   getCrises: PropTypes.func.isRequired,
   resolveCrisis: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired
+  showModal: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -183,13 +175,12 @@ export default connect(
     return {
       flag: staff.flag || false,
       crisisType: system && system.crisisType,
-      assistanceType: system && system.assistanceType
+      assistanceType: system && system.assistanceType,
     };
   },
   dispatch => ({
     resolveCrisis: (id, undo) => dispatch(resolveCrisis(id, undo)),
     getCrises: () => dispatch(getCrises()),
-    showModal: (modalType, modalProps) =>
-      dispatch(showModal(modalType, modalProps))
+    showModal: (modalType, modalProps) => dispatch(showModal(modalType, modalProps)),
   })
 )(CrisisListTable);

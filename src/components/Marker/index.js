@@ -27,7 +27,7 @@ Marker.propTypes = {
   location: PropTypes.string.isRequired,
   crisisType: PropTypes.array,
   type: PropTypes.array.isRequired,
-  description: PropTypes.string
+  description: PropTypes.string,
 };
 
 export default Marker;

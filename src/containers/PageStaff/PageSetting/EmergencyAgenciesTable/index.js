@@ -8,18 +8,18 @@ const EmergencyAgenciesTable = props => {
     {
       title: "Agency",
       dataIndex: "agency",
-      key: "agency"
+      key: "agency",
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
-      key: "phoneNumber"
+      key: "phoneNumber",
     },
     {
       title: "Actions",
       key: "actions",
-      dataIndex: "actions"
-    }
+      dataIndex: "actions",
+    },
   ];
 
   const createDataSource = () => {
@@ -39,7 +39,7 @@ const EmergencyAgenciesTable = props => {
                 props.showModal("SINGLE_INPUT", {
                   title: "EDIT PHONE NUMBER",
                   defaultValue: phoneNumber,
-                  handler: phoneNumber => editPhoneNumber(id, phoneNumber)
+                  handler: phoneNumber => editPhoneNumber(id, phoneNumber),
                 })
               }
             >
@@ -47,24 +47,18 @@ const EmergencyAgenciesTable = props => {
             </Button>
             <Button type="danger">Delete</Button>
           </div>
-        )
+        ),
       };
     });
   };
 
-  return (
-    <Table
-      dataSource={createDataSource()}
-      columns={COLUMNS}
-      pagination={false}
-    />
-  );
+  return <Table dataSource={createDataSource()} columns={COLUMNS} pagination={false} />;
 };
 
 EmergencyAgenciesTable.propTypes = {
   emergencyAgencies: PropTypes.array,
   showModal: PropTypes.func.isRequired,
-  editPhoneNumber: PropTypes.func.isRequired
+  editPhoneNumber: PropTypes.func.isRequired,
 };
 
 export default EmergencyAgenciesTable;

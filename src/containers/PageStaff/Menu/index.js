@@ -22,7 +22,7 @@ const Menu = props => (
 );
 
 Menu.propTypes = {
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default Menu;

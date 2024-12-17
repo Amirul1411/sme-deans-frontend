@@ -6,19 +6,19 @@ export const startRealTimeCrisisTracking = () => dispatch => {
   const onOpen = () => {
     console.log("Socket connection established.");
     dispatch({
-      type: actionTypes.FETCH_CRISIS_REQUESTED
+      type: actionTypes.FETCH_CRISIS_REQUESTED,
     });
     api
       .getCrises()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_CRISIS_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_FAILURE
+          type: actionTypes.FETCH_CRISIS_FAILURE,
         })
       );
   };
@@ -27,7 +27,7 @@ export const startRealTimeCrisisTracking = () => dispatch => {
     const crises = JSON.parse(message && message.data);
     dispatch({
       type: actionTypes.FETCH_CRISIS_SUCCESS,
-      payload: crises
+      payload: crises,
     });
   };
   const onException = () => {
@@ -55,12 +55,12 @@ export const startRealTimeConditionTracking = interval => {
         .then(response =>
           dispatch({
             type: actionTypes.FETCH_PSI_SUCCESS,
-            payload: response.data
+            payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_PSI_FAILURE
+            type: actionTypes.FETCH_PSI_FAILURE,
           })
         );
       api
@@ -68,12 +68,12 @@ export const startRealTimeConditionTracking = interval => {
         .then(response =>
           dispatch({
             type: actionTypes.FETCH_HUMIDITY_SUCCESS,
-            payload: response.data
+            payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_HUMIDITY_FAILURE
+            type: actionTypes.FETCH_HUMIDITY_FAILURE,
           })
         );
       api
@@ -81,12 +81,12 @@ export const startRealTimeConditionTracking = interval => {
         .then(response =>
           dispatch({
             type: actionTypes.FETCH_RAINFALL_SUCCESS,
-            payload: response.data
+            payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_RAINFALL_FAILURE
+            type: actionTypes.FETCH_RAINFALL_FAILURE,
           })
         );
       api
@@ -94,12 +94,12 @@ export const startRealTimeConditionTracking = interval => {
         .then(response =>
           dispatch({
             type: actionTypes.FETCH_TEMPERATURE_SUCCESS,
-            payload: response.data
+            payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_TEMPERATURE_FAILURE
+            type: actionTypes.FETCH_TEMPERATURE_FAILURE,
           })
         );
     };
@@ -111,51 +111,51 @@ export const startRealTimeConditionTracking = interval => {
 export const fetchTypes = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_CRISIS_TYPE_REQUESTED
+      type: actionTypes.FETCH_CRISIS_TYPE_REQUESTED,
     });
     api
       .getCrisisType()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_CRISIS_TYPE_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_TYPE_FAILURE
+          type: actionTypes.FETCH_CRISIS_TYPE_FAILURE,
         })
       );
     dispatch({
-      type: actionTypes.FETCH_ASSISTANCE_TYPE_REQUESTED
+      type: actionTypes.FETCH_ASSISTANCE_TYPE_REQUESTED,
     });
     api
       .getAssistanceType()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_ASSISTANCE_TYPE_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_ASSISTANCE_TYPE_FAILURE
+          type: actionTypes.FETCH_ASSISTANCE_TYPE_FAILURE,
         })
       );
     dispatch({
-      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED
+      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED,
     });
     api
       .getEmergencyAgencies()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE
+          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE,
         })
       );
   };
@@ -164,19 +164,19 @@ export const fetchTypes = () => {
 export const getCrises = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_CRISIS_REQUESTED
+      type: actionTypes.FETCH_CRISIS_REQUESTED,
     });
     api
       .getCrises()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_CRISIS_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_FAILURE
+          type: actionTypes.FETCH_CRISIS_FAILURE,
         })
       );
   };
@@ -185,19 +185,19 @@ export const getCrises = () => {
 export const getUserList = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_USER_LIST_REQUESTED
+      type: actionTypes.FETCH_USER_LIST_REQUESTED,
     });
     api
       .getUserList()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_USER_LIST_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_USER_LIST_FAILURE
+          type: actionTypes.FETCH_USER_LIST_FAILURE,
         })
       );
   };
@@ -206,7 +206,7 @@ export const getUserList = () => {
 export const reportCrises = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.REPORT_CRISIS_REQUESTED
+      type: actionTypes.REPORT_CRISIS_REQUESTED,
     });
     await api
       .reportCrises(form)
@@ -218,14 +218,14 @@ export const reportCrises = form => {
 export const userLogin = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.USER_LOGIN_REQUESTED
+      type: actionTypes.USER_LOGIN_REQUESTED,
     });
     await api
       .userLogin(form)
       .then(response => {
         dispatch({
           type: actionTypes.USER_LOGIN_SUCCESS,
-          payload: response.data
+          payload: response.data,
         });
       })
       .catch(() => dispatch({ type: actionTypes.USER_LOGIN_FAILURE }));
@@ -235,13 +235,13 @@ export const userLogin = form => {
 export const userLogout = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.USER_LOGOUT_REQUESTED
+      type: actionTypes.USER_LOGOUT_REQUESTED,
     });
     await api
       .userLogout(form)
       .then(() => {
         dispatch({
-          type: actionTypes.USER_LOGOUT_SUCCESS
+          type: actionTypes.USER_LOGOUT_SUCCESS,
         });
       })
       .catch(() => dispatch({ type: actionTypes.USER_LOGOUT_FAILURE }));
@@ -251,13 +251,13 @@ export const userLogout = form => {
 export const resolveCrisis = (id, undo) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.RESOLVE_CRISIS_REQUESTED
+      type: actionTypes.RESOLVE_CRISIS_REQUESTED,
     });
     await api
       .resolveCrisis(id, undo)
       .then(() => {
         dispatch({
-          type: actionTypes.RESOLVE_CRISIS_SUCCESS
+          type: actionTypes.RESOLVE_CRISIS_SUCCESS,
         });
       })
       .catch(() => dispatch({ type: actionTypes.RESOLVE_CRISIS_FAILURE }));
@@ -267,13 +267,13 @@ export const resolveCrisis = (id, undo) => {
 export const addUser = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_USER_REQUESTED
+      type: actionTypes.ADD_USER_REQUESTED,
     });
     await api
       .addUser(form)
       .then(() => {
         dispatch({
-          type: actionTypes.ADD_USER_SUCCESS
+          type: actionTypes.ADD_USER_SUCCESS,
         });
       })
       .catch(() => dispatch({ type: actionTypes.ADD_USER_FAILURE }));
@@ -283,13 +283,13 @@ export const addUser = form => {
 export const editUser = (id, form) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.EDIT_USER_REQUESTED
+      type: actionTypes.EDIT_USER_REQUESTED,
     });
     await api
       .editUser(id, form)
       .then(() => {
         dispatch({
-          type: actionTypes.EDIT_USER_SUCCESS
+          type: actionTypes.EDIT_USER_SUCCESS,
         });
       })
       .catch(() => dispatch({ type: actionTypes.EDIT_USER_FAILURE }));
@@ -299,7 +299,7 @@ export const editUser = (id, form) => {
 export const addCrisisType = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_CRISIS_TYPE_REQUESTED
+      type: actionTypes.ADD_CRISIS_TYPE_REQUESTED,
     });
     await api
       .addCrisisType(form)
@@ -313,7 +313,7 @@ export const addCrisisType = form => {
 export const addAssistanceType = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_ASSISTANCE_TYPE_REQUESTED
+      type: actionTypes.ADD_ASSISTANCE_TYPE_REQUESTED,
     });
     await api
       .addAssistanceType(form)
@@ -327,19 +327,19 @@ export const addAssistanceType = form => {
 export const getEmergencyAgencies = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED
+      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED,
     });
     api
       .getEmergencyAgencies()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE
+          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE,
         })
       );
   };
@@ -348,19 +348,19 @@ export const getEmergencyAgencies = () => {
 export const editEmergencyAgencies = (id, form) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.EDIT_EMERGENCY_AGENCIES_REQUESTED
+      type: actionTypes.EDIT_EMERGENCY_AGENCIES_REQUESTED,
     });
     await api
       .editEmergencyAgencies(id, form)
       .then(response =>
         dispatch({
           type: actionTypes.EDIT_EMERGENCY_AGENCIES_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.EDIT_EMERGENCY_AGENCIES_FAILURE
+          type: actionTypes.EDIT_EMERGENCY_AGENCIES_FAILURE,
         })
       );
   };
@@ -369,23 +369,21 @@ export const editEmergencyAgencies = (id, form) => {
 export const addEmergencyAgencies = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_EMERGENCY_AGENCIES_REQUESTED
+      type: actionTypes.ADD_EMERGENCY_AGENCIES_REQUESTED,
     });
     await api
       .addEmergencyAgencies(form)
       .then(() => {
         dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCIES_SUCCESS });
       })
-      .catch(() =>
-        dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCIES_FAILURE })
-      );
+      .catch(() => dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCIES_FAILURE }));
   };
 };
 
 export const editSiteSettings = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.EDIT_SITE_SETTINGS_REQUESTED
+      type: actionTypes.EDIT_SITE_SETTINGS_REQUESTED,
     });
     await api
       .editSiteSettings(form)
@@ -399,19 +397,19 @@ export const editSiteSettings = form => {
 export const getCurrentUser = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_CURRENT_USER_REQUESTED
+      type: actionTypes.FETCH_CURRENT_USER_REQUESTED,
     });
     api
       .getCurrentUser()
       .then(response =>
         dispatch({
           type: actionTypes.FETCH_CURRENT_USER_SUCCESS,
-          payload: response.data
+          payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CURRENT_USER_FAILURE
+          type: actionTypes.FETCH_CURRENT_USER_FAILURE,
         })
       );
   };
@@ -420,18 +418,18 @@ export const getCurrentUser = () => {
 export const dispatchCrisis = (id, phoneNumberToNotify) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.DISPATCH_CRISIS_REQUESTED
+      type: actionTypes.DISPATCH_CRISIS_REQUESTED,
     });
     await api
       .dispatchCrisis(id, phoneNumberToNotify)
       .then(() =>
         dispatch({
-          type: actionTypes.DISPATCH_CRISIS_SUCCESS
+          type: actionTypes.DISPATCH_CRISIS_SUCCESS,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.DISPATCH_CRISIS_FAILURE
+          type: actionTypes.DISPATCH_CRISIS_FAILURE,
         })
       );
   };
@@ -442,13 +440,13 @@ export const showModal = (modalType, modalProps) => {
     type: actionTypes.MODAL_SHOW,
     payload: {
       modalType,
-      modalProps
-    }
+      modalProps,
+    },
   };
 };
 
 export const hideModal = () => {
   return {
-    type: actionTypes.MODAL_HIDE
+    type: actionTypes.MODAL_HIDE,
   };
 };

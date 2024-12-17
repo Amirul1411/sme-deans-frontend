@@ -6,32 +6,28 @@ module.exports = {
     jest: true
   },
   parser: "babel-eslint",
-  extends: ["eslint:recommended", "plugin:react/recommended", "prettier", "prettier/react",],
+  extends: ["eslint:recommended", "plugin:react/recommended", "prettier"],
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
-      experimentalObjectRestSpread: true
+      jsx: true
     },
-    ecmaVersion: 7,
+    ecmaVersion: 2020,
     sourceType: "module"
   },
-  plugins: ["react", "prettier", "json"],
+  plugins: ["react", "prettier"],
+  settings: {
+    react: {
+      version: "16.4.1"
+    }
+  },
   rules: {
-    // indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
-    semi: ["error", "always"],
-    eqeqeq: 'error',
-    "no-console": 0,
-    "react/display-name": 0,
-
-    // Prettier
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "eqeqeq": "error",
+    "no-console": "warn",
+    "react/display-name": "error",
     "prettier/prettier": "error",
-    "no-tabs": "error",
-    "max-depth": ["error", { max: 3 }],
-    "max-statements": ["error", { max: 20 }],
-    complexity: "error",
-    "max-params": ["error", { max: 4 }],
-    "max-nested-callbacks": ["error", { max: 3 }]
+    "complexity": ["error", 15]
   }
 };

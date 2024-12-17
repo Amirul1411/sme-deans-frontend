@@ -68,7 +68,7 @@ class PageHome extends React.Component {
             <div className={styles.activeCrisisListTableContainer}>
               <div className={styles.subHeader}>{t.activeCrisis}</div>
               <div className={styles.activeCrisisListTable}>
-                <ActiveCrisisListTable crises={filteredCrises} />
+                <ActiveCrisisListTable crises={this.filterCrises(this.props.crises || [])} />
               </div>
             </div>
           </div>
@@ -98,10 +98,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTypes: () => dispatch(fetchTypes()),
-  getCrises: () => dispatch(getCrises())
+  getCrises: () => dispatch(getCrises()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageHome);
+export default connect(mapStateToProps, mapDispatchToProps)(PageHome);

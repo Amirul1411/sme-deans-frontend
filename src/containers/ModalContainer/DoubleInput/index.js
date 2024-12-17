@@ -25,7 +25,7 @@ class _Form extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {getFieldDecorator("valueA", {
-            rules: [{ required: true, message: `Please input ${labelA}!` }]
+            rules: [{ required: true, message: `Please input ${labelA}!` }],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -36,7 +36,7 @@ class _Form extends React.Component {
         </FormItem>
         <FormItem>
           {getFieldDecorator("valueB", {
-            rules: [{ required: true, message: `Please input ${labelB}!` }]
+            rules: [{ required: true, message: `Please input ${labelB}!` }],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -46,11 +46,7 @@ class _Form extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.createButton}
-          >
+          <Button type="primary" htmlType="submit" className={styles.createButton}>
             Confirm
           </Button>
         </FormItem>
@@ -64,26 +60,15 @@ _Form.propTypes = {
   labelA: PropTypes.string.isRequired,
   labelB: PropTypes.string.isRequired,
   handler: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired
+  hideModal: PropTypes.func.isRequired,
 };
 
 const DoubleInput = props => {
   const EmbedForm = Form.create()(_Form);
   const { handler, hideModal, labelA, labelB } = props;
   return (
-    <Modal
-      centered
-      title={props.title}
-      visible
-      onCancel={props.hideModal}
-      footer={null}
-    >
-      <EmbedForm
-        handler={handler}
-        hideModal={hideModal}
-        labelA={labelA}
-        labelB={labelB}
-      />
+    <Modal centered title={props.title} visible onCancel={props.hideModal} footer={null}>
+      <EmbedForm handler={handler} hideModal={hideModal} labelA={labelA} labelB={labelB} />
     </Modal>
   );
 };
@@ -93,7 +78,7 @@ DoubleInput.propTypes = {
   title: PropTypes.string.isRequired,
   labelA: PropTypes.string.isRequired,
   labelB: PropTypes.string.isRequired,
-  handler: PropTypes.func.isRequired
+  handler: PropTypes.func.isRequired,
 };
 
 export default DoubleInput;

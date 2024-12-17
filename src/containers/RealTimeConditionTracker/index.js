@@ -12,15 +12,11 @@ class RealTimeCrisisTracker extends React.Component {
 
 RealTimeCrisisTracker.propTypes = {
   startRealTimeConditionTracking: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired
+  children: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  startRealTimeConditionTracking: time =>
-    dispatch(startRealTimeConditionTracking(time))
+  startRealTimeConditionTracking: time => dispatch(startRealTimeConditionTracking(time)),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(RealTimeCrisisTracker);
+export default connect(null, mapDispatchToProps)(RealTimeCrisisTracker);

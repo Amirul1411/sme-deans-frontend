@@ -25,7 +25,7 @@ const translations = {
 
 class PageLogin extends React.Component {
   state = {
-    redirect: false
+    redirect: false,
   };
 
   setRedirect = () => {
@@ -74,6 +74,6 @@ export default connect(
     };
   },
   dispatch => ({
-    userLogin: form => dispatch(userLogin(form))
+    userLogin: form => dispatch(userLogin(form)),
   })
 )(PageLogin);

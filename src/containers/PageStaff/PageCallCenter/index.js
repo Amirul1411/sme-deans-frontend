@@ -38,7 +38,7 @@ class PageDashboard extends React.Component {
                   crisisType: this.props.crisisType,
                   assistanceType: this.props.assistanceType,
                   reportCrises: this.props.reportCrises,
-                  getCrises: this.props.getCrises
+                  getCrises: this.props.getCrises,
                 })
               }
             >
@@ -61,7 +61,7 @@ PageDashboard.propTypes = {
   reportCrises: PropTypes.func.isRequired,
   crisisType: PropTypes.object,
   assistanceType: PropTypes.object,
-  showModal: PropTypes.func.isRequired
+  showModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -69,7 +69,7 @@ const mapStateToProps = state => {
   return {
     crisisType: system && system.crisisType,
     assistanceType: system && system.assistanceType,
-    crises: common && common.crises
+    crises: common && common.crises,
   };
 };
 
@@ -77,11 +77,7 @@ const mapDispatchToProps = dispatch => ({
   fetchTypes: () => dispatch(fetchTypes()),
   getCrises: () => dispatch(getCrises()),
   reportCrises: form => dispatch(reportCrises(form)),
-  showModal: (modalType, modalProps) =>
-    dispatch(showModal(modalType, modalProps))
+  showModal: (modalType, modalProps) => dispatch(showModal(modalType, modalProps)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(PageDashboard);

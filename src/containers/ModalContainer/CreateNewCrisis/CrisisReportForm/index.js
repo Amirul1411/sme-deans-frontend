@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Tooltip, Icon, Select, Button, message } from "antd";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng
-} from "react-places-autocomplete";
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -20,7 +17,7 @@ class CrisisReportForm extends React.Component {
   state = {
     confirmDirty: false,
     address: "",
-    gps: null
+    gps: null,
   };
 
   handleChange = () => null; // dummy
@@ -33,7 +30,7 @@ class CrisisReportForm extends React.Component {
       .then(gps => {
         this.setState({ gps, address });
         this.props.form.setFieldsValue({
-          location: address
+          location: address,
         });
       })
       .catch(error => console.error("Error", error));
@@ -50,7 +47,7 @@ class CrisisReportForm extends React.Component {
           crisisType,
           crisisDescription,
           assistanceType,
-          assistanceDescription
+          assistanceDescription,
         } = values;
         const form = new FormData();
         form.append("your_name", name);
@@ -67,10 +64,7 @@ class CrisisReportForm extends React.Component {
         }
         form.append("crisis_status", "PD");
         form.append("crisis_location1", JSON.stringify(this.state.address)); // important because object makes no sense in REST
-        form.append(
-          "crisis_location2",
-          typeof location_2 === "undefined" ? "" : location_2
-        );
+        form.append("crisis_location2", typeof location_2 === "undefined" ? "" : location_2);
         form.append(
           "crisis_description",
           typeof crisisDescription === "undefined" ? "" : crisisDescription
@@ -101,14 +95,14 @@ class CrisisReportForm extends React.Component {
 
     const formItemLayout = {
       labelCol: {
-        sm: { span: 8 }
+        sm: { span: 8 },
       },
       wrapperCol: {
-        sm: { span: 15 }
-      }
+        sm: { span: 15 },
+      },
     };
     const prefixSelector = getFieldDecorator("prefix", {
-      initialValue: "65"
+      initialValue: "65",
     })(
       <Select disabled style={{ width: 70 }}>
         <Option value="65">+65</Option>
@@ -133,16 +127,14 @@ class CrisisReportForm extends React.Component {
               {
                 required: true,
                 message: "Please input your name!",
-                whitespace: true
-              }
-            ]
+                whitespace: true,
+              },
+            ],
           })(<Input placeholder="Enter your name" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Mobile Number">
           {getFieldDecorator("phone", {
-            rules: [
-              { required: true, message: "Please input your mobile number!" }
-            ]
+            rules: [{ required: true, message: "Please input your mobile number!" }],
           })(<Input addonBefore={prefixSelector} style={{ width: "100%" }} />)}
         </FormItem>
         <FormItem {...formItemLayout} label={<span>Location</span>}>
@@ -151,25 +143,17 @@ class CrisisReportForm extends React.Component {
               {
                 required: true,
                 message: "Please input the location!",
-                whitespace: true
-              }
-            ]
+                whitespace: true,
+              },
+            ],
           })(
-            <PlacesAutocomplete
-              onChange={this.handleChange}
-              onSelect={this.handleSelect}
-            >
-              {({
-                getInputProps,
-                suggestions,
-                getSuggestionItemProps,
-                loading
-              }) => {
+            <PlacesAutocomplete onChange={this.handleChange} onSelect={this.handleSelect}>
+              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
                 return (
                   <React.Fragment>
                     <Input
                       {...getInputProps({
-                        placeholder: "Search places..."
+                        placeholder: "Search places...",
                       })}
                     />
                     <div className="autocomplete-dropdown-container">
@@ -187,7 +171,7 @@ class CrisisReportForm extends React.Component {
                             key={index}
                             {...getSuggestionItemProps(suggestion, {
                               className,
-                              style
+                              style,
                             })}
                           >
                             <span>{suggestion.description}</span>
@@ -206,9 +190,9 @@ class CrisisReportForm extends React.Component {
             rules: [
               {
                 required: false,
-                whitespace: true
-              }
-            ]
+                whitespace: true,
+              },
+            ],
           })(<Input placeholder="Room number, block number, street name..." />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Crisis Type">
@@ -217,9 +201,9 @@ class CrisisReportForm extends React.Component {
               {
                 type: "array",
                 required: true,
-                message: "Please select crisis type!"
-              }
-            ]
+                message: "Please select crisis type!",
+              },
+            ],
           })(
             <Select mode="multiple" placeholder="Select crisis type(s)">
               {createSelectionList(this.props.crisisType)}
@@ -228,22 +212,17 @@ class CrisisReportForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="Crisis Description">
           {getFieldDecorator("crisisDescription", {
-            rules: [{ required: false }]
-          })(
-            <Input
-              style={{ width: "100%" }}
-              placeholder="Anything we must know?"
-            />
-          )}
+            rules: [{ required: false }],
+          })(<Input style={{ width: "100%" }} placeholder="Anything we must know?" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="Assistance Type">
           {getFieldDecorator("assistanceType", {
             rules: [
               {
                 type: "array",
-                required: false
-              }
-            ]
+                required: false,
+              },
+            ],
           })(
             <Select mode="multiple" placeholder="Select assistance(s) required">
               {createSelectionList(this.props.assistanceType)}
@@ -252,7 +231,7 @@ class CrisisReportForm extends React.Component {
         </FormItem>
         <FormItem {...formItemLayout} label="Assistance Description">
           {getFieldDecorator("assistanceDescription", {
-            rules: [{ required: false }]
+            rules: [{ required: false }],
           })(
             <Input
               style={{ width: "100%" }}
@@ -275,7 +254,7 @@ CrisisReportForm.propTypes = {
   assistanceType: PropTypes.array.isRequired,
   reportCrises: PropTypes.func.isRequired,
   getCrises: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired
+  hideModal: PropTypes.func.isRequired,
 };
 
 export default Form.create()(CrisisReportForm);

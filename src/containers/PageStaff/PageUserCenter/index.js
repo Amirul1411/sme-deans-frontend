@@ -12,13 +12,7 @@ class PageUserCenter extends React.Component {
   }
 
   render() {
-    const {
-      userList,
-      addUser,
-      showEditUserModal,
-      editUser,
-      currentUser
-    } = this.props;
+    const { userList, addUser, showEditUserModal, editUser, currentUser } = this.props;
     return (
       <div>
         <h1>User Center</h1>
@@ -47,14 +41,14 @@ PageUserCenter.propTypes = {
   showEditUserModal: PropTypes.func.isRequired,
   userList: PropTypes.array,
   currentUser: PropTypes.string,
-  getUserList: PropTypes.func.isRequired
+  getUserList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
   const { staff } = state;
   return {
     currentUser: staff && staff.currentUser,
-    userList: staff && staff.userList
+    userList: staff && staff.userList,
   };
 };
 
@@ -62,10 +56,7 @@ const mapDispatchToProps = dispatch => ({
   getUserList: () => dispatch(getUserList()),
   addUser: modalProps => dispatch(showModal("ADD_USER", modalProps)),
   showEditUserModal: modalProps => dispatch(showModal("EDIT_USER", modalProps)),
-  editUser: (id, form) => dispatch(editUser(id, form))
+  editUser: (id, form) => dispatch(editUser(id, form)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageUserCenter);
+export default connect(mapStateToProps, mapDispatchToProps)(PageUserCenter);

@@ -41,8 +41,8 @@ export const userLogout = () => {
 export const getUserList = () => {
   return axios.get("/users/", {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
@@ -59,12 +59,12 @@ export const dispatchCrisis = (id, phoneNumberToNotify) => {
     "/crises/update-partial/" + id + "/",
     {
       crisis_status: "DP",
-      phone_number_to_notify: phoneNumberToNotify
+      phone_number_to_notify: phoneNumberToNotify,
     },
     {
       headers: {
-        Authorization: `Token ${_getAuthToken()}`
-      }
+        Authorization: `Token ${_getAuthToken()}`,
+      },
     }
   );
 };
@@ -73,12 +73,12 @@ export const resolveCrisis = (id, undo) => {
   return axios.put(
     "/crises/update-partial/" + id + "/",
     {
-      crisis_status: undo ? "PD" : "RS"
+      crisis_status: undo ? "PD" : "RS",
     },
     {
       headers: {
-        Authorization: `Token ${_getAuthToken()}`
-      }
+        Authorization: `Token ${_getAuthToken()}`,
+      },
     }
   );
 };
@@ -86,32 +86,32 @@ export const resolveCrisis = (id, undo) => {
 export const addUser = form => {
   return axios.post("/users/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
 export const editUser = (id, form) => {
   return axios.put("/users/update-partial/" + id + "/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
 export const addCrisisType = form => {
   return axios.post("/crisistype/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
 export const addAssistanceType = form => {
   return axios.post("/crisisassistance/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
@@ -122,32 +122,32 @@ export const getEmergencyAgencies = () => {
 export const addEmergencyAgencies = form => {
   return axios.post("/emergencyagencies/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
 export const editEmergencyAgencies = (id, form) => {
   return axios.put("/emergencyagencies/update-partial/" + id + "/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
 export const editSiteSettings = form => {
   return axios.post("/sitesettings/", form, {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
 export const getCurrentUser = () => {
   return axios.get("/rest-auth/user/", {
     headers: {
-      Authorization: `Token ${_getAuthToken()}`
-    }
+      Authorization: `Token ${_getAuthToken()}`,
+    },
   });
 };
 
