@@ -215,22 +215,51 @@ export const reportCrises = form => {
   };
 };
 
-export const userLogin = form => {
-  return async dispatch => {
-    dispatch({
-      type: actionTypes.USER_LOGIN_REQUESTED
-    });
-    await api
-      .userLogin(form)
-      .then(response => {
-        dispatch({
-          type: actionTypes.USER_LOGIN_SUCCESS,
-          payload: response.data
-        });
-      })
-      .catch(() => dispatch({ type: actionTypes.USER_LOGIN_FAILURE }));
+const loginApiCall = async (form) => {
+  const response = await api.userLogin(form);
+  return response.data; // Extract response data directly
+};
+
+export const userLogin = (form) => {
+  return async (dispatch) => {
+    try {
+      // Dispatch login request
+      dispatch({ type: actionTypes.USER_LOGIN_REQUESTED });
+
+      // Call the login API
+      const data = await loginApiCall(form);
+
+      // Dispatch success action with response payload
+      dispatch({
+        type: actionTypes.USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      // Dispatch failure action with optional error payload
+      dispatch({
+        type: actionTypes.USER_LOGIN_FAILURE,
+        error: error.message || "Login failed. Please try again.",
+      });
+    }
   };
 };
+
+// export const userLogin = form => {
+//   return async dispatch => {
+//     dispatch({
+//       type: actionTypes.USER_LOGIN_REQUESTED
+//     });
+//     await api
+//       .userLogin(form)
+//       .then(response => {
+//         dispatch({
+//           type: actionTypes.USER_LOGIN_SUCCESS,
+//           payload: response.data
+//         });
+//       })
+//       .catch(() => dispatch({ type: actionTypes.USER_LOGIN_FAILURE }));
+//   };
+// };
 
 export const userLogout = form => {
   return async dispatch => {
