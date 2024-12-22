@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import { combineReducers } from "redux";
+import { CRISIS_STATUS } from "../constants/crisis";
 
 const initialState = {
   staff: {
@@ -14,7 +15,8 @@ const initialState = {
     emergencyAgencies: null,
   },
   common: {
-    flag: false,
+    loading: false,
+    error: null,
     crises: null,
     psi: null,
     humidity: null,
@@ -26,8 +28,8 @@ const initialState = {
     modalProps: null,
   },
   language: {
-    language: "en"
-  }
+    language: "en",
+  },
 };
 
 const language = (state = initialState.language, action) => {
@@ -36,7 +38,7 @@ const language = (state = initialState.language, action) => {
     case actionTypes.SET_LANGUAGE:
       return {
         ...state,
-        language: payload
+        language: payload,
       };
     default:
       return state;
@@ -45,10 +47,10 @@ const language = (state = initialState.language, action) => {
 
 const system = (state = initialState.system, action) => {
   const { type, payload } = action;
-  
-  const transform = (obj) => {
+
+  const transform = obj => {
     const type = {};
-    obj.forEach((val) => {
+    obj.forEach(val => {
       type[val.id] = val.name;
     });
     return type;
@@ -252,10 +254,68 @@ const staff = (state = initialState.staff, action) => {
 const common = (state = initialState.common, action) => {
   const { type, payload } = action;
   switch (type) {
+    case actionTypes.FETCH_CRISIS_REQUESTED:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
     case actionTypes.FETCH_CRISIS_SUCCESS:
       return {
         ...state,
+        loading: false,
+        error: null,
         crises: payload,
+      };
+    case actionTypes.FETCH_CRISIS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: "Failed to fetch crisis data"
+      };
+    case actionTypes.REPORT_CRISIS_REQUESTED:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        flag: false
+      };
+    case actionTypes.REPORT_CRISIS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        flag: true
+      };
+    case actionTypes.REPORT_CRISIS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: "Failed to report crisis",
+        flag: false
+      };
+    case actionTypes.UPDATE_CRISIS_STATUS_REQUESTED:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case actionTypes.UPDATE_CRISIS_STATUS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        crises: state.crises.map(crisis => 
+          crisis.crisis_id === payload.id 
+            ? { ...crisis, crisis_status: payload.status }
+            : crisis
+        )
+      };
+    case actionTypes.UPDATE_CRISIS_STATUS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: "Failed to update crisis status"
       };
     case actionTypes.FETCH_PSI_SUCCESS:
       return {
@@ -279,21 +339,6 @@ const common = (state = initialState.common, action) => {
       return {
         ...state,
         temperature: payload && payload.items && payload.items[0].readings[0].value,
-      };
-    case actionTypes.REPORT_CRISIS_REQUESTED:
-      return {
-        ...state,
-        flag: false, // reset flag
-      };
-    case actionTypes.REPORT_CRISIS_SUCCESS:
-      return {
-        ...state,
-        flag: true,
-      };
-    case actionTypes.REPORT_CRISIS_FAILURE:
-      return {
-        ...state,
-        flag: false,
       };
     default:
       return state;
@@ -320,64 +365,37 @@ const modal = (state = initialState.modal, action) => {
   }
 };
 
-// Helper functions to handle specific state updates
+// Helper functions for crisis updates
 const handleCrisisUpdate = (crises, updatedCrisis) => {
   return crises.map(crisis => 
-    crisis.id === updatedCrisis.id ? updatedCrisis : crisis
+    crisis.crisis_id === updatedCrisis.crisis_id 
+      ? { ...crisis, ...updatedCrisis }
+      : crisis
   );
 };
 
 const handleStatusUpdate = (crises, crisisId, newStatus) => {
   return crises.map(crisis => 
-    crisis.id === crisisId 
-      ? { ...crisis, status: newStatus }
+    crisis.crisis_id === crisisId 
+      ? { ...crisis, crisis_status: newStatus }
       : crisis
   );
 };
 
 const handleDispatchUpdate = (crises, crisisId, dispatchInfo) => {
-  return crises.map(crisis => 
-    crisis.id === crisisId 
+  return crises.map(crisis =>
+    crisis.crisis_id === crisisId 
       ? { ...crisis, dispatch: dispatchInfo }
       : crisis
   );
 };
-
-// Main reducer with reduced complexity
-const crisisReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_CRISES_SUCCESS:
-      return {
-        ...state,
-        crises: action.payload
-      };
-
-    case UPDATE_CRISIS_SUCCESS:
-      return {
-        ...state,
-        crises: handleCrisisUpdate(state.crises, action.payload)
-      };
-
-    case UPDATE_CRISIS_STATUS_SUCCESS:
-      return {
-        ...state,
-        crises: handleStatusUpdate(state.crises, action.payload.id, action.payload.status)
-      };
-
-    case UPDATE_CRISIS_DISPATCH_SUCCESS:
-      return {
-        ...state,
-        crises: handleDispatchUpdate(state.crises, action.payload.id, action.payload.dispatch)
-      };
-    };
-  };
 
 const rootReducer = combineReducers({
   language,
   system,
   common,
   modal,
-  staff
+  staff,
 });
 
 export default rootReducer;

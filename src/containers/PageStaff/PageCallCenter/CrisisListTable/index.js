@@ -2,22 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { showModal, resolveCrisis, getCrises } from "@redux/actions";
-import { Modal, Button, Table, message, Tag } from "antd";
+import { Modal, Button, Table, message, Tag, Alert, Spin } from "antd";
+import { CRISIS_STATUS, CRISIS_STATUS_LABELS, CRISIS_STATUS_COLORS } from "@constants/crisis";
 import * as styles from "./style.scss";
 
-const statusMap = {
-  PD: "Pending",
-  DP: "Dispatched",
-  RS: "Resolved",
-};
-
-const statusOrder = {
-  PD: 0,
-  DP: 1,
-  RS: 2,
-};
-
-// eslint-disable-next-line max-params
 const resolve = (id, flag, resolveCrisis, getCrises, undo) => {
   Modal.confirm({
     title: undo ? "Activate crisis?" : "Resolve crisis?",
@@ -26,12 +14,10 @@ const resolve = (id, flag, resolveCrisis, getCrises, undo) => {
       resolveCrisis(id, undo)
         .then(() => {
           message.success(`Crisis has been ${undo ? "activated" : "resolved"}.`, 2);
-          getCrises();
         })
-        .catch(error => console.log(error));
-    },
-    onCancel() {
-      console.log("Cancel");
+        .catch(error => {
+          message.error(error || "Failed to update crisis status", 2);
+        });
     },
   });
 };
@@ -60,6 +46,7 @@ const COLUMNS = [
     key: "status",
     dataIndex: "status",
     width: 100,
+    sorter: (a, b) => a.statusOrder - b.statusOrder,
   },
 ];
 
@@ -71,16 +58,13 @@ const createDataSource = (
   editCrisis,
   resolveCrisis,
   getCrises
-  // eslint-disable-next-line
 ) =>
   crisisList
-    .sort((a, b) => statusOrder[a.crisis_status] - statusOrder[b.crisis_status])
     .map(crisis => {
       const id = crisis.crisis_id;
       const type = crisis.crisis_type
         .map(val => crisisType && crisisType[val])
         .map((type, index) => (
-          // eslint-disable-next-line react/jsx-key
           <Tag key={index} color="purple">
             {type}
           </Tag>
@@ -91,77 +75,85 @@ const createDataSource = (
         key: id,
         crisisType: type,
         location: location,
+        statusOrder: Object.values(CRISIS_STATUS).indexOf(status),
         status: (
           <span
             style={{
-              color: (() => {
-                switch (status) {
-                  case "RS":
-                    return "#ccc";
-                  case "PD":
-                    return "crimson";
-                  default:
-                    return "black";
-                }
-              })(),
+              color: CRISIS_STATUS_COLORS[status],
             }}
           >
-            {statusMap[status]}
+            {CRISIS_STATUS_LABELS[status]}
           </span>
         ),
         action: (
           <div className={styles.actions}>
-            {/* <Button
-              disabled={status === "RS"}
-              type="dashed"
-              onClick={() => editCrisis(crisis)}
+            <Button 
+              disabled={status === CRISIS_STATUS.RESOLVED} 
+              onClick={() => dispatchCrisis(crisis)}
             >
-              Edit
-            </Button> */}
-            <Button disabled={status === "RS"} onClick={() => dispatchCrisis(crisis)}>
               Dispatch
             </Button>
             <Button
-              onClick={() => resolve(id, flag, resolveCrisis, getCrises, status === "RS")}
+              onClick={() => resolve(
+                id, 
+                flag, 
+                resolveCrisis, 
+                getCrises, 
+                status === CRISIS_STATUS.RESOLVED
+              )}
               type="danger"
             >
-              {status === "RS" ? "Activate" : "Resolve"}
+              {status === CRISIS_STATUS.RESOLVED ? "Activate" : "Resolve"}
             </Button>
           </div>
         ),
         detail: crisis,
       };
-    });
+    })
+    .sort((a, b) => a.statusOrder - b.statusOrder);
 
 const CrisisListTable = props => {
-  const { crises, crisisType, resolveCrisis, flag, getCrises } = props;
+  const { crises, crisisType, resolveCrisis, flag, getCrises, loading, error } = props;
+
   const dispatchCrisis = crisis => {
     props.showModal("DISPATCH_CRISIS", { crisis });
   };
 
-  const editCrisis = crisis => {
-    props.showModal("EDIT_CRISIS", { crisis });
-  };
+  if (error) {
+    return (
+      <Alert
+        message="Error"
+        description={error}
+        type="error"
+        showIcon
+        style={{ marginBottom: 16 }}
+      />
+    );
+  }
+
   return (
-    <Table
-      dataSource={createDataSource(
-        flag,
-        crises,
-        crisisType,
-        dispatchCrisis,
-        editCrisis,
-        resolveCrisis,
-        getCrises
-      )}
-      columns={COLUMNS}
-    />
+    <Spin spinning={loading}>
+      <Table
+        dataSource={createDataSource(
+          flag,
+          crises || [],
+          crisisType,
+          dispatchCrisis,
+          null,
+          resolveCrisis,
+          getCrises
+        )}
+        columns={COLUMNS}
+      />
+    </Spin>
   );
 };
 
 CrisisListTable.propTypes = {
   flag: PropTypes.bool.isRequired,
   crises: PropTypes.array,
-  // from redux
+  loading: PropTypes.bool,
+  error: PropTypes.string,
   crisisType: PropTypes.object,
   assistanceType: PropTypes.object,
   getCrises: PropTypes.func.isRequired,
@@ -171,9 +163,11 @@ CrisisListTable.propTypes = {
 
 export default connect(
   state => {
-    const { system, staff } = state;
+    const { system, staff, common } = state;
     return {
       flag: staff.flag || false,
+      loading: common.loading,
+      error: common.error,
       crisisType: system && system.crisisType,
       assistanceType: system && system.assistanceType,
     };

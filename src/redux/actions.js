@@ -1,5 +1,14 @@
 import * as actionTypes from "./actionTypes";
 import * as api from "@api";
+import { CRISIS_STATUS } from "../constants/crisis";
+
+// Helper function to handle API errors
+const handleApiError = (error) => {
+  if (error.response) {
+    return error.response.data.message || "Server error occurred";
+  }
+  return error.message || "Network error occurred";
+};
 
 export const startRealTimeCrisisTracking = () => dispatch => {
   let socket;
@@ -163,22 +172,20 @@ export const fetchTypes = () => {
 
 export const getCrises = () => {
   return async dispatch => {
-    dispatch({
-      type: actionTypes.FETCH_CRISIS_REQUESTED,
-    });
-    api
-      .getCrises()
-      .then(response =>
-        dispatch({
-          type: actionTypes.FETCH_CRISIS_SUCCESS,
-          payload: response.data,
-        })
-      )
-      .catch(() =>
-        dispatch({
-          type: actionTypes.FETCH_CRISIS_FAILURE,
-        })
-      );
+    dispatch({ type: actionTypes.FETCH_CRISIS_REQUESTED });
+    try {
+      const response = await api.getCrises();
+      dispatch({
+        type: actionTypes.FETCH_CRISIS_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      dispatch({
+        type: actionTypes.FETCH_CRISIS_FAILURE,
+        payload: errorMessage,
+      });
+    }
   };
 };
 
@@ -205,13 +212,19 @@ export const getUserList = () => {
 
 export const reportCrises = form => {
   return async dispatch => {
-    dispatch({
-      type: actionTypes.REPORT_CRISIS_REQUESTED,
-    });
-    await api
-      .reportCrises(form)
-      .then(() => dispatch({ type: actionTypes.REPORT_CRISIS_SUCCESS }))
-      .catch(() => dispatch({ type: actionTypes.REPORT_CRISIS_FAILURE }));
+    dispatch({ type: actionTypes.REPORT_CRISIS_REQUESTED });
+    try {
+      await api.reportCrises(form);
+      dispatch({ type: actionTypes.REPORT_CRISIS_SUCCESS });
+      // Refresh crisis list after successful report
+      dispatch(getCrises());
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      dispatch({ 
+        type: actionTypes.REPORT_CRISIS_FAILURE,
+        payload: errorMessage
+      });
+    }
   };
 };
 
@@ -250,17 +263,23 @@ export const userLogout = form => {
 
 export const resolveCrisis = (id, undo) => {
   return async dispatch => {
-    dispatch({
-      type: actionTypes.RESOLVE_CRISIS_REQUESTED,
-    });
-    await api
-      .resolveCrisis(id, undo)
-      .then(() => {
-        dispatch({
-          type: actionTypes.RESOLVE_CRISIS_SUCCESS,
-        });
-      })
-      .catch(() => dispatch({ type: actionTypes.RESOLVE_CRISIS_FAILURE }));
+    dispatch({ type: actionTypes.UPDATE_CRISIS_STATUS_REQUESTED });
+    try {
+      const newStatus = undo ? CRISIS_STATUS.PENDING : CRISIS_STATUS.RESOLVED;
+      await api.resolveCrisis(id, undo);
+      dispatch({
+        type: actionTypes.UPDATE_CRISIS_STATUS_SUCCESS,
+        payload: { id, status: newStatus }
+      });
+      // Refresh crisis list after status update
+      dispatch(getCrises());
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      dispatch({ 
+        type: actionTypes.UPDATE_CRISIS_STATUS_FAILURE,
+        payload: errorMessage
+      });
+    }
   };
 };
 
@@ -417,21 +436,22 @@ export const getCurrentUser = () => {
 
 export const dispatchCrisis = (id, phoneNumberToNotify) => {
   return async dispatch => {
-    dispatch({
-      type: actionTypes.DISPATCH_CRISIS_REQUESTED,
-    });
-    await api
-      .dispatchCrisis(id, phoneNumberToNotify)
-      .then(() =>
-        dispatch({
-          type: actionTypes.DISPATCH_CRISIS_SUCCESS,
-        })
-      )
-      .catch(() =>
-        dispatch({
-          type: actionTypes.DISPATCH_CRISIS_FAILURE,
-        })
-      );
+    dispatch({ type: actionTypes.DISPATCH_CRISIS_REQUESTED });
+    try {
+      await api.dispatchCrisis(id, phoneNumberToNotify);
+      dispatch({
+        type: actionTypes.DISPATCH_CRISIS_SUCCESS,
+        payload: { id, status: CRISIS_STATUS.DISPATCHED }
+      });
+      // Refresh crisis list after dispatch
+      dispatch(getCrises());
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      dispatch({ 
+        type: actionTypes.DISPATCH_CRISIS_FAILURE,
+        payload: errorMessage
+      });
+    }
   };
 };
 
