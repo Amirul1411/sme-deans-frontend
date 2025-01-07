@@ -1,474 +1,452 @@
-// Importing action types and API methods
 import * as actionTypes from "./actionTypes";
 import * as api from "@api";
 
-// Action to start real-time crisis tracking using WebSocket
 export const startRealTimeCrisisTracking = () => dispatch => {
   let socket;
-
-  // WebSocket onOpen handler: triggered when the socket connection is established
   const onOpen = () => {
     console.log("Socket connection established.");
     dispatch({
-      type: actionTypes.FETCH_CRISIS_REQUESTED, // Dispatch request action for fetching crises
+      type: actionTypes.FETCH_CRISIS_REQUESTED,
     });
-
-    // Fetch initial crisis data
     api
       .getCrises()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_SUCCESS, // Dispatch success action with response data
+          type: actionTypes.FETCH_CRISIS_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_FAILURE, // Dispatch failure action in case of error
+          type: actionTypes.FETCH_CRISIS_FAILURE,
         })
       );
   };
-
-  // WebSocket onMessage handler: triggered when a message is received from the WebSocket
   const onMessage = message => {
     console.log("Socket received message.");
-    const crises = JSON.parse(message && message.data); // Parse the received crisis data
+    const crises = JSON.parse(message && message.data);
     dispatch({
-      type: actionTypes.FETCH_CRISIS_SUCCESS, // Dispatch success action with parsed data
+      type: actionTypes.FETCH_CRISIS_SUCCESS,
       payload: crises,
     });
   };
-
-  // WebSocket onException handler: triggered when there's an error with the socket connection
   const onException = () => {
     console.log("Socket connection error... Try again in 10 seconds.");
     setTimeout(() => {
-      socket = api.createWebSocket(); // Recreate the socket after a delay
-      socket.onerror = onException; // Attach error handler
-      socket.onopen = onOpen; // Attach open handler
-      socket.onmessage = onMessage; // Attach message handler
-    }, 10000); // Retry after 10 seconds
+      socket = api.createWebSocket();
+      socket.onerror = onException;
+      socket.onopen = onOpen;
+      socket.onmessage = onMessage;
+      // socket.onclose = onException;
+    }, 10000);
   };
 
-  // Create the WebSocket connection and attach event handlers
   socket = api.createWebSocket();
-  socket.onerror = onException; // Attach error handler
-  socket.onopen = onOpen; // Attach open handler
-  socket.onmessage = onMessage; // Attach message handler
+  socket.onerror = onException;
+  socket.onopen = onOpen;
+  socket.onmessage = onMessage;
 };
 
-// Action to start real-time condition tracking for various parameters like PSI, Humidity, Rainfall, and Temperature
 export const startRealTimeConditionTracking = interval => {
   return async dispatch => {
     const job = () => {
-      // Fetch PSI (Pollutant Standards Index) data
       api
         .getPSI()
         .then(response =>
           dispatch({
-            type: actionTypes.FETCH_PSI_SUCCESS, // Dispatch success action for PSI
+            type: actionTypes.FETCH_PSI_SUCCESS,
             payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_PSI_FAILURE, // Dispatch failure action for PSI
+            type: actionTypes.FETCH_PSI_FAILURE,
           })
         );
-
-      // Fetch Humidity data
       api
         .getHumidity()
         .then(response =>
           dispatch({
-            type: actionTypes.FETCH_HUMIDITY_SUCCESS, // Dispatch success action for Humidity
+            type: actionTypes.FETCH_HUMIDITY_SUCCESS,
             payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_HUMIDITY_FAILURE, // Dispatch failure action for Humidity
+            type: actionTypes.FETCH_HUMIDITY_FAILURE,
           })
         );
-
-      // Fetch Rainfall data
       api
         .getRainfall()
         .then(response =>
           dispatch({
-            type: actionTypes.FETCH_RAINFALL_SUCCESS, // Dispatch success action for Rainfall
+            type: actionTypes.FETCH_RAINFALL_SUCCESS,
             payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_RAINFALL_FAILURE, // Dispatch failure action for Rainfall
+            type: actionTypes.FETCH_RAINFALL_FAILURE,
           })
         );
-
-      // Fetch Temperature data
       api
         .getTemperature()
         .then(response =>
           dispatch({
-            type: actionTypes.FETCH_TEMPERATURE_SUCCESS, // Dispatch success action for Temperature
+            type: actionTypes.FETCH_TEMPERATURE_SUCCESS,
             payload: response.data,
           })
         )
         .catch(() =>
           dispatch({
-            type: actionTypes.FETCH_TEMPERATURE_FAILURE, // Dispatch failure action for Temperature
+            type: actionTypes.FETCH_TEMPERATURE_FAILURE,
           })
         );
     };
-
-    job(); // Execute the job initially
-    setInterval(job, interval); // Repeat the job at specified intervals
+    job();
+    setInterval(job, interval);
   };
 };
 
-// Action to fetch crisis types, assistance types, and emergency agencies
 export const fetchTypes = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_CRISIS_TYPE_REQUESTED, // Request action for crisis types
+      type: actionTypes.FETCH_CRISIS_TYPE_REQUESTED,
     });
-
-    // Fetch crisis types data
     api
       .getCrisisType()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_TYPE_SUCCESS, // Dispatch success action for crisis types
+          type: actionTypes.FETCH_CRISIS_TYPE_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_TYPE_FAILURE, // Dispatch failure action for crisis types
+          type: actionTypes.FETCH_CRISIS_TYPE_FAILURE,
         })
       );
-
-    // Fetch assistance types data
     dispatch({
-      type: actionTypes.FETCH_ASSISTANCE_TYPE_REQUESTED, // Request action for assistance types
+      type: actionTypes.FETCH_ASSISTANCE_TYPE_REQUESTED,
     });
     api
       .getAssistanceType()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_ASSISTANCE_TYPE_SUCCESS, // Dispatch success action for assistance types
+          type: actionTypes.FETCH_ASSISTANCE_TYPE_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_ASSISTANCE_TYPE_FAILURE, // Dispatch failure action for assistance types
+          type: actionTypes.FETCH_ASSISTANCE_TYPE_FAILURE,
         })
       );
-
-    // Fetch emergency agencies data
     dispatch({
-      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED, // Request action for emergency agencies
+      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED,
     });
     api
       .getEmergencyAgencies()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS, // Dispatch success action for emergency agencies
+          type: actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE, // Dispatch failure action for emergency agencies
+          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE,
         })
       );
   };
 };
 
-// Action to fetch crises data from API
 export const getCrises = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_CRISIS_REQUESTED, // Request action for fetching crises
+      type: actionTypes.FETCH_CRISIS_REQUESTED,
     });
     api
       .getCrises()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_SUCCESS, // Dispatch success action with crisis data
+          type: actionTypes.FETCH_CRISIS_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CRISIS_FAILURE, // Dispatch failure action in case of error
+          type: actionTypes.FETCH_CRISIS_FAILURE,
         })
       );
   };
 };
 
-// Action to fetch user list data from API
 export const getUserList = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_USER_LIST_REQUESTED, // Request action for fetching user list
+      type: actionTypes.FETCH_USER_LIST_REQUESTED,
     });
     api
       .getUserList()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_USER_LIST_SUCCESS, // Dispatch success action with user list data
+          type: actionTypes.FETCH_USER_LIST_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_USER_LIST_FAILURE, // Dispatch failure action in case of error
+          type: actionTypes.FETCH_USER_LIST_FAILURE,
         })
       );
   };
 };
 
-// Action to report a crisis
 export const reportCrises = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.REPORT_CRISIS_REQUESTED, // Request action for reporting a crisis
+      type: actionTypes.REPORT_CRISIS_REQUESTED,
     });
     await api
       .reportCrises(form)
-      .then(() => dispatch({ type: actionTypes.REPORT_CRISIS_SUCCESS })) // Dispatch success action after reporting
-      .catch(() => dispatch({ type: actionTypes.REPORT_CRISIS_FAILURE })); // Dispatch failure action in case of error
+      .then(() => dispatch({ type: actionTypes.REPORT_CRISIS_SUCCESS }))
+      .catch(() => dispatch({ type: actionTypes.REPORT_CRISIS_FAILURE }));
   };
 };
 
-// Action to login the user
 export const userLogin = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.USER_LOGIN_REQUESTED, // Request action for user login
+      type: actionTypes.USER_LOGIN_REQUESTED,
     });
     await api
       .userLogin(form)
       .then(response => {
         dispatch({
-          type: actionTypes.USER_LOGIN_SUCCESS, // Dispatch success action with login response data
+          type: actionTypes.USER_LOGIN_SUCCESS,
           payload: response.data,
         });
       })
-      .catch(() => dispatch({ type: actionTypes.USER_LOGIN_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.USER_LOGIN_FAILURE }));
   };
 };
 
-// Action to logout the user
 export const userLogout = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.USER_LOGOUT_REQUESTED, // Request action for user logout
+      type: actionTypes.USER_LOGOUT_REQUESTED,
     });
     await api
       .userLogout(form)
       .then(() => {
         dispatch({
-          type: actionTypes.USER_LOGOUT_SUCCESS, // Dispatch success action after logout
+          type: actionTypes.USER_LOGOUT_SUCCESS,
         });
       })
-      .catch(() => dispatch({ type: actionTypes.USER_LOGOUT_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.USER_LOGOUT_FAILURE }));
   };
 };
 
-// Action to resolve a crisis (mark it as resolved)
 export const resolveCrisis = (id, undo) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.RESOLVE_CRISIS_REQUESTED, // Request action for resolving a crisis
+      type: actionTypes.RESOLVE_CRISIS_REQUESTED,
     });
     await api
       .resolveCrisis(id, undo)
       .then(() => {
         dispatch({
-          type: actionTypes.RESOLVE_CRISIS_SUCCESS, // Dispatch success action after resolving the crisis
+          type: actionTypes.RESOLVE_CRISIS_SUCCESS,
         });
       })
-      .catch(() => dispatch({ type: actionTypes.RESOLVE_CRISIS_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.RESOLVE_CRISIS_FAILURE }));
   };
 };
 
-// Action to add a new user
 export const addUser = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_USER_REQUESTED, // Request action for adding a new user
+      type: actionTypes.ADD_USER_REQUESTED,
     });
     await api
       .addUser(form)
       .then(() => {
         dispatch({
-          type: actionTypes.ADD_USER_SUCCESS, // Dispatch success action after adding a user
+          type: actionTypes.ADD_USER_SUCCESS,
         });
       })
-      .catch(() => dispatch({ type: actionTypes.ADD_USER_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.ADD_USER_FAILURE }));
   };
 };
 
-// Action to edit an existing user
 export const editUser = (id, form) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.EDIT_USER_REQUESTED, // Request action for editing a user
+      type: actionTypes.EDIT_USER_REQUESTED,
     });
     await api
       .editUser(id, form)
       .then(() => {
         dispatch({
-          type: actionTypes.EDIT_USER_SUCCESS, // Dispatch success action after editing a user
+          type: actionTypes.EDIT_USER_SUCCESS,
         });
       })
-      .catch(() => dispatch({ type: actionTypes.EDIT_USER_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.EDIT_USER_FAILURE }));
   };
 };
 
-// Action to add a new crisis type
 export const addCrisisType = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_CRISIS_TYPE_REQUESTED, // Request action for adding a crisis type
+      type: actionTypes.ADD_CRISIS_TYPE_REQUESTED,
     });
     await api
       .addCrisisType(form)
       .then(() => {
-        dispatch({ type: actionTypes.ADD_CRISIS_TYPE_SUCCESS }); // Dispatch success action after adding crisis type
+        dispatch({ type: actionTypes.ADD_CRISIS_TYPE_SUCCESS });
       })
-      .catch(() => dispatch({ type: actionTypes.ADD_CRISIS_TYPE_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.ADD_CRISIS_TYPE_FAILURE }));
   };
 };
 
-// Action to add a new assistance type
 export const addAssistanceType = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_ASSISTANCE_TYPE_REQUESTED, // Request action for adding an assistance type
+      type: actionTypes.ADD_ASSISTANCE_TYPE_REQUESTED,
     });
     await api
       .addAssistanceType(form)
       .then(() => {
-        dispatch({ type: actionTypes.ADD_ASSISTANCE_TYPE_SUCCESS }); // Dispatch success action after adding assistance type
+        dispatch({ type: actionTypes.ADD_ASSISTANCE_TYPE_SUCCESS });
       })
-      .catch(() => dispatch({ type: actionTypes.ADD_ASSISTANCE_TYPE_FAILURE })); // Dispatch failure action in case of error
+      .catch(() => dispatch({ type: actionTypes.ADD_ASSISTANCE_TYPE_FAILURE }));
   };
 };
 
-// Action to fetch emergency agencies data
 export const getEmergencyAgencies = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED, // Request action for fetching emergency agencies
+      type: actionTypes.FETCH_EMERGENCY_AGENCIES_REQUESTED,
     });
     api
       .getEmergencyAgencies()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS, // Dispatch success action with emergency agencies data
+          type: actionTypes.FETCH_EMERGENCY_AGENCIES_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE, // Dispatch failure action for emergency agencies
+          type: actionTypes.FETCH_EMERGENCY_AGENCIES_FAILURE,
         })
       );
   };
 };
 
-// Action to create a new emergency agency
-export const addEmergencyAgency = form => {
+export const editEmergencyAgencies = (id, form) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.ADD_EMERGENCY_AGENCY_REQUESTED, // Request action for adding an emergency agency
+      type: actionTypes.EDIT_EMERGENCY_AGENCIES_REQUESTED,
     });
     await api
-      .addEmergencyAgency(form)
-      .then(() => {
-        dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCY_SUCCESS }); // Dispatch success action after adding emergency agency
-      })
-      .catch(() => dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCY_FAILURE })); // Dispatch failure action in case of error
+      .editEmergencyAgencies(id, form)
+      .then(response =>
+        dispatch({
+          type: actionTypes.EDIT_EMERGENCY_AGENCIES_SUCCESS,
+          payload: response.data,
+        })
+      )
+      .catch(() =>
+        dispatch({
+          type: actionTypes.EDIT_EMERGENCY_AGENCIES_FAILURE,
+        })
+      );
   };
 };
 
-// Action to edit site settings
+export const addEmergencyAgencies = form => {
+  return async dispatch => {
+    dispatch({
+      type: actionTypes.ADD_EMERGENCY_AGENCIES_REQUESTED,
+    });
+    await api
+      .addEmergencyAgencies(form)
+      .then(() => {
+        dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCIES_SUCCESS });
+      })
+      .catch(() => dispatch({ type: actionTypes.ADD_EMERGENCY_AGENCIES_FAILURE }));
+  };
+};
+
 export const editSiteSettings = form => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.EDIT_SITE_SETTINGS_REQUESTED, // Dispatch request action for editing site settings
+      type: actionTypes.EDIT_SITE_SETTINGS_REQUESTED,
     });
     await api
-      .editSiteSettings(form) // Call the API to edit site settings
+      .editSiteSettings(form)
       .then(() => {
-        dispatch({ type: actionTypes.EDIT_SITE_SETTINGS_SUCCESS }); // Dispatch success action after successful edit
+        dispatch({ type: actionTypes.EDIT_SITE_SETTINGS_SUCCESS });
       })
-      .catch(() => dispatch({ type: actionTypes.EDIT_SITE_SETTINGS_FAILURE })); // Dispatch failure action if error occurs
+      .catch(() => dispatch({ type: actionTypes.EDIT_SITE_SETTINGS_FAILURE }));
   };
 };
 
-// Action to fetch the current user data
 export const getCurrentUser = () => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.FETCH_CURRENT_USER_REQUESTED, // Dispatch request action for fetching current user
+      type: actionTypes.FETCH_CURRENT_USER_REQUESTED,
     });
     api
-      .getCurrentUser() // Call API to get current user data
+      .getCurrentUser()
       .then(response =>
         dispatch({
-          type: actionTypes.FETCH_CURRENT_USER_SUCCESS, // Dispatch success action with current user data
+          type: actionTypes.FETCH_CURRENT_USER_SUCCESS,
           payload: response.data,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.FETCH_CURRENT_USER_FAILURE, // Dispatch failure action in case of error
+          type: actionTypes.FETCH_CURRENT_USER_FAILURE,
         })
       );
   };
 };
 
-// Action to dispatch a crisis
 export const dispatchCrisis = (id, phoneNumberToNotify) => {
   return async dispatch => {
     dispatch({
-      type: actionTypes.DISPATCH_CRISIS_REQUESTED, // Dispatch request action to dispatch crisis
+      type: actionTypes.DISPATCH_CRISIS_REQUESTED,
     });
     await api
-      .dispatchCrisis(id, phoneNumberToNotify) // Call API to dispatch a crisis with given data
+      .dispatchCrisis(id, phoneNumberToNotify)
       .then(() =>
         dispatch({
-          type: actionTypes.DISPATCH_CRISIS_SUCCESS, // Dispatch success action after dispatching crisis
+          type: actionTypes.DISPATCH_CRISIS_SUCCESS,
         })
       )
       .catch(() =>
         dispatch({
-          type: actionTypes.DISPATCH_CRISIS_FAILURE, // Dispatch failure action if crisis dispatch fails
+          type: actionTypes.DISPATCH_CRISIS_FAILURE,
         })
       );
   };
 };
 
-// Action to show a modal with specific type and properties
 export const showModal = (modalType, modalProps) => {
   return {
-    type: actionTypes.MODAL_SHOW, // Dispatch action to show a modal
+    type: actionTypes.MODAL_SHOW,
     payload: {
-      modalType, // Type of modal to show (e.g., 'confirmation', 'error')
-      modalProps, // Properties of the modal (e.g., message, title)
+      modalType,
+      modalProps,
     },
   };
 };
 
-// Action to hide a modal
 export const hideModal = () => {
   return {
-    type: actionTypes.MODAL_HIDE, // Dispatch action to hide the modal
+    type: actionTypes.MODAL_HIDE,
   };
 };

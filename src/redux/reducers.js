@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import { combineReducers } from "redux";
 
-// Initial state structure for the Redux store
 const initialState = {
   staff: {
     currentUser: null,
@@ -27,29 +26,26 @@ const initialState = {
     modalProps: null,
   },
   language: {
-    language: "en" // Default language set to English
+    language: "en"
   }
 };
 
-// Reducer to handle the language change
 const language = (state = initialState.language, action) => {
   const { type, payload } = action;
   switch (type) {
     case actionTypes.SET_LANGUAGE:
       return {
         ...state,
-        language: payload // Update language
+        language: payload
       };
     default:
       return state;
   }
 };
 
-// Reducer to handle system-related actions (e.g., crisis type, assistance type)
 const system = (state = initialState.system, action) => {
   const { type, payload } = action;
   
-  // Helper function to transform data into a specific format (e.g., { id: name })
   const transform = (obj) => {
     const type = {};
     obj.forEach((val) => {
@@ -253,14 +249,13 @@ const staff = (state = initialState.staff, action) => {
   }
 };
 
-// Reducer to handle common data (e.g., crisis data, PSI, weather info)
 const common = (state = initialState.common, action) => {
   const { type, payload } = action;
   switch (type) {
     case actionTypes.FETCH_CRISIS_SUCCESS:
       return {
         ...state,
-        crises: payload, // Store crisis data
+        crises: payload,
       };
     case actionTypes.FETCH_PSI_SUCCESS:
       return {
@@ -285,11 +280,10 @@ const common = (state = initialState.common, action) => {
         ...state,
         temperature: payload && payload.items && payload.items[0].readings[0].value,
       };
-    // Crisis reporting actions
     case actionTypes.REPORT_CRISIS_REQUESTED:
       return {
         ...state,
-        flag: false,
+        flag: false, // reset flag
       };
     case actionTypes.REPORT_CRISIS_SUCCESS:
       return {
@@ -306,21 +300,20 @@ const common = (state = initialState.common, action) => {
   }
 };
 
-// Reducer to manage modal visibility and properties
 const modal = (state = initialState.modal, action) => {
   const { type, payload } = action;
   switch (type) {
     case actionTypes.MODAL_SHOW:
       return {
         ...state,
-        modalType: payload.modalType, // Set modal type
-        modalProps: payload.modalProps, // Set modal properties
+        modalType: payload.modalType,
+        modalProps: payload.modalProps,
       };
     case actionTypes.MODAL_HIDE:
       return {
         ...state,
-        modalType: null, // Reset modal type
-        modalProps: null, // Reset modal properties
+        modalType: null,
+        modalProps: null,
       };
     default:
       return state;
@@ -379,7 +372,6 @@ const crisisReducer = (state = initialState, action) => {
     };
   };
 
-  // Combine all reducers into a root reducer
 const rootReducer = combineReducers({
   language,
   system,
