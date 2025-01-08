@@ -4,12 +4,12 @@
 
 ## How to start
 
-1. Install dependencies
+1. Removing Deprecated Dependencies
 
-`$ yarn install`
+`$ yarn remove node-sass`
 
-2. Run on a development server
+2. Run a custom script to fix the repo to a certain extent
 
-`$ yarn start`
+`$ fix-repo`
 
 3. The development server runs on `localhost:3000`

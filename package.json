@@ -15,7 +15,11 @@
     "lint:style": "stylelint \"src/**/*.scss\" --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,scss,json}\"",
     "test": "jest",
-    "sass": "sass src/styles:dist/styles"
+    "sass": "sass src/styles:dist/styles",
+    "fix-dependencies": "yarn add sass",
+    "reset-yarn-lock": "del yarn.lock",
+    "reinstall": "yarn install",
+    "fix-repo": "yarn run fix-dependencies && yarn run reset-yarn-lock && yarn run reinstall && yarn start"
   },
   "dependencies": {
     "antd": "^3.9.2",
@@ -73,7 +77,7 @@
     "prettier": "2.8.8",
     "prettier-eslint": "^8.8.2",
     "resolve-url-loader": "^2.3.2",
-    "sass": "^1.81.0",
+    "sass": "^1.83.1",
     "sass-loader": "^7.3.1",
     "style-loader": "^0.21.0",
     "stylelint": "14.16.1",
