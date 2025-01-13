@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Modal from "antd/lib/modal";
-import { Form, Input, Icon, Button } from "antd";
+import { Form, Input, Button } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import * as styles from "./style.scss";
 
 const FormItem = Form.Item;
@@ -27,7 +28,7 @@ class _Form extends React.Component {
             rules: [{ required: true, message: "Please input values!" }]
           })(
             <Input
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
               type="text"
               value={defaultValue}
               placeholder="Input values..."

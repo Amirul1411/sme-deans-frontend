@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { userLogin } from "@redux/actions";
 import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
@@ -19,7 +19,7 @@ class PageLogin extends React.Component {
   };
 
   render() {
-    if (this.state.redirect) return <Redirect to="/staff/dashboard" />;
+    if (this.state.redirect) return <Navigate to="/staff/dashboard" />;
     return (
       <React.Fragment>
         <NavBar />

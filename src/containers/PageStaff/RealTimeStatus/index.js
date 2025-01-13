@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Icon } from "antd";
+import { WifiOutlined } from "@ant-design/icons";
 import * as styles from "./style.scss";
 
 const RealTimeStatus = props => (
@@ -19,9 +19,7 @@ const RealTimeStatus = props => (
     </div>
     <div className={styles.internet}>
       Internet Status:
-      <Icon
-        type="check-circle"
-        theme="twoTone"
+      <WifiOutlined 
         twoToneColor="#52c41a"
         style={{ marginLeft: "0.5rem" }}
       />{" "}

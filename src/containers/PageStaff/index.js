@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as ROUTES from "src/routes";
@@ -48,7 +48,7 @@ class PageStaff extends React.Component {
             </div>
           </div>
           <div className={styles.right}>
-            <Switch>
+            <Routes>
               <Route
                 exact
                 path={ROUTES.ROUTE_DASHBOARD}
@@ -66,7 +66,7 @@ class PageStaff extends React.Component {
               />
               {/* fallback */}
               <Route path={ROUTES.ROUTE_STAFF} component={PageCallCenter} />
-            </Switch>
+            </Routes>
           </div>
         </div>
         <Footer />

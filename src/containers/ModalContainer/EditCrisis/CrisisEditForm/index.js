@@ -1,5 +1,6 @@
 import React from "react";
-import { Form, Input, Tooltip, Icon, Select, Button } from "antd";
+import { Form, Input, Tooltip, Select, Button } from "antd";
+import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -102,7 +103,7 @@ class CrisisEditForm extends React.Component {
             <span>
               Your Name&nbsp;
               <Tooltip title="Your real name">
-                <Icon type="question-circle-o" />
+                <QuestionCircleOutlined />
               </Tooltip>
             </span>
           }

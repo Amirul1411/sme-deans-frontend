@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Input, Icon, Checkbox, Button, message } from "antd";
+import { Form, Input, Checkbox, Button, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import * as styles from "./style.scss";
 
 const FormItem = Form.Item;
@@ -40,7 +41,7 @@ class LoginForm extends React.Component {
             rules: [{ required: true, message: "Please input your username!" }]
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
               placeholder="Username"
             />
           )}
@@ -50,7 +51,7 @@ class LoginForm extends React.Component {
             rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
               type="password"
               placeholder="Password"
             />

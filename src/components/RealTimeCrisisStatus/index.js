@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Icon } from "antd";
+import { CheckCircleTwoTone } from "@ant-design/icons";
 import * as styles from "./style.scss";
 
 const RealTimeCrisisStatus = props => {
@@ -18,9 +18,7 @@ const RealTimeCrisisStatus = props => {
       </div>
       <div className={styles.internet}>
         Internet Status:
-        <Icon
-          type="check-circle"
-          theme="twoTone"
+        <CheckCircleTwoTone
           twoToneColor="#52c41a"
           style={{ marginLeft: "0.5rem" }}
         />{" "}

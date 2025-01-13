@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import store from "@redux/store";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import * as ROUTES from "src/routes";
 import PageHome from "@containers/PageHome";
@@ -23,14 +23,14 @@ const App = () => (
       <RealTimeConditionTracker>
         <RealTimeCrisisTracker>
           <Router>
-            <Switch>
+            <Routes>
               <Route exact path={ROUTES.ROUTE_HOME} component={PageHome} />
               <Route path={ROUTES.ROUTE_REPORT} component={PageReport} />
               <Route path={ROUTES.ROUTE_LOGIN} component={PageLogin} />
               <Route path={ROUTES.ROUTE_STAFF} component={PageStaff} />
               {/* fall back main page */}
               <Route path={"/"} component={PageHome} />
-            </Switch>
+            </Routes>
           </Router>
         </RealTimeCrisisTracker>
       </RealTimeConditionTracker>

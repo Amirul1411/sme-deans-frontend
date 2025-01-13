@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { addUser } from "@redux/actions";
 import PropTypes from "prop-types";
 import Modal from "antd/lib/modal";
-import { Form, Input, Icon, Checkbox, Button, message } from "antd";
+import { Form, Input, Checkbox, Button, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import * as styles from "./style.scss";
 
 const FormItem = Form.Item;
@@ -35,7 +36,7 @@ class _AddUserForm extends React.Component {
             rules: [{ required: true, message: "Please input username!" }]
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<UserOutlined />}
               placeholder="Username"
             />
           )}
@@ -45,7 +46,7 @@ class _AddUserForm extends React.Component {
             rules: [{ required: true, message: "Please input password!" }]
           })(
             <Input
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<LockOutlined />}
               type="password"
               placeholder="Password"
             />
